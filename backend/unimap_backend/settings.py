@@ -1,9 +1,15 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+# Load .env file when present (local dev).  Docker passes vars via environment:,
+# so load_dotenv() does NOT override already-set environment variables.
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-insecure-change-me')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-insecure-change-me')
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
@@ -22,6 +28,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'corsheaders',
     'rest_framework',
     'rest_framework_gis',
     'django_filters',
@@ -36,6 +43,9 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    # CorsMiddleware MUST be placed as high as possible — before any middleware
+    # that generates responses (e.g. CommonMiddleware, WhiteNoiseMiddleware).
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -114,6 +124,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
 }
+
+# ─── CORS ─────────────────────────────────────────────────────────────────
+# Allow all origins during development. Before deploying to production, replace
+# with: CORS_ALLOWED_ORIGINS = ['https://your-frontend-domain.com']
+CORS_ALLOW_ALL_ORIGINS = True
 
 # ─── GeoDjango Library Paths (auto-detected in Docker; override via env) ───
 
