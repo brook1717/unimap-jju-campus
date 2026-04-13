@@ -1,3 +1,4 @@
+import glob
 import os
 from pathlib import Path
 
@@ -35,10 +36,14 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    'users',
     'locations',
     'facilities',
     'routing',
 ]
+
+# Custom user model — must be declared before any migration that references auth
+AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -105,18 +110,39 @@ USE_I18N = True
 USE_TZ = True
 
 # ─── Static & Media Files ─────────────────────────────────────────────────
+# Local defaults — used when USE_S3 is not set or False.
+# To enable AWS S3, set USE_S3=True plus the AWS_* vars in .env.
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+USE_S3 = os.environ.get('USE_S3', 'False') == 'True'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if USE_S3:
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_DEFAULT_ACL = 'public-read'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ─── Django REST Framework ────────────────────────────────────────────────
 
 REST_FRAMEWORK = {
+    # Open for development; switch to IsAuthenticated before production
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -126,17 +152,35 @@ REST_FRAMEWORK = {
 }
 
 # ─── CORS ─────────────────────────────────────────────────────────────────
-# Allow all origins during development. Before deploying to production, replace
-# with: CORS_ALLOWED_ORIGINS = ['https://your-frontend-domain.com']
-CORS_ALLOW_ALL_ORIGINS = True
+# Explicit allow-list for cross-origin requests.  In DEBUG mode the wildcard
+# is also enabled for convenience; set DEBUG=False in production and update
+# CORS_ALLOWED_ORIGINS with your deployed frontend URL.
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',   # Vite dev server
+    'http://127.0.0.1:5173',
+    'http://localhost:3000',
+]
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # True in dev, False in prod
 
-# ─── GeoDjango Library Paths (auto-detected in Docker; override via env) ───
+# ─── GeoDjango Library Paths ──────────────────────────────────────────────
+# In the Docker container (Debian Bookworm + ldconfig) Django auto-detects
+# GDAL 3.6 and GEOS 3.11 via ctypes.  The glob fallback below pins the
+# versioned .so when auto-detection fails (e.g. custom base images).
+# Override at any time by setting GDAL_LIBRARY_PATH / GEOS_LIBRARY_PATH in .env.
 
-_gdal_path = os.environ.get('GDAL_LIBRARY_PATH', '')
-_geos_path = os.environ.get('GEOS_LIBRARY_PATH', '')
+_gdal_env = os.environ.get('GDAL_LIBRARY_PATH', '')
+_geos_env = os.environ.get('GEOS_LIBRARY_PATH', '')
 
-if _gdal_path:
-    GDAL_LIBRARY_PATH = _gdal_path
+if _gdal_env:
+    GDAL_LIBRARY_PATH = _gdal_env
+else:
+    _gdal_candidates = sorted(glob.glob('/usr/lib/x86_64-linux-gnu/libgdal.so.*'))
+    if _gdal_candidates:
+        GDAL_LIBRARY_PATH = _gdal_candidates[-1]
 
-if _geos_path:
-    GEOS_LIBRARY_PATH = _geos_path
+if _geos_env:
+    GEOS_LIBRARY_PATH = _geos_env
+else:
+    _geos_candidates = sorted(glob.glob('/usr/lib/x86_64-linux-gnu/libgeos_c.so.*'))
+    if _geos_candidates:
+        GEOS_LIBRARY_PATH = _geos_candidates[-1]
