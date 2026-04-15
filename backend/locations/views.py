@@ -1,10 +1,13 @@
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
+from rest_framework_gis.pagination import GeoJsonPagination
 
 from .models import CampusLocation
 from .serializers import CampusLocationSerializer
@@ -17,10 +20,29 @@ class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
         .prefetch_related('facilities')
     )
     serializer_class = CampusLocationSerializer
+    pagination_class = GeoJsonPagination
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category']
     search_fields = ['name', 'description']
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'lat', OpenApiTypes.FLOAT, OpenApiParameter.QUERY,
+                required=True,
+                description='Latitude of the reference coordinate (WGS 84).',
+            ),
+            OpenApiParameter(
+                'lng', OpenApiTypes.FLOAT, OpenApiParameter.QUERY,
+                required=True,
+                description='Longitude of the reference coordinate (WGS 84).',
+            ),
+        ],
+        description=(
+            'Returns the single nearest **active** CampusLocation to the '
+            'supplied coordinate, ranked by PostGIS geodesic distance.'
+        ),
+    )
     @action(detail=False, methods=['get'], url_path='nearest')
     def nearest(self, request):
         """

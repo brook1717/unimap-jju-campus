@@ -2,6 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_gis.pagination import GeoJsonPagination
 
 from .models import CampusPath
 from .serializers import CampusPathSerializer
@@ -14,6 +15,7 @@ class CampusPathViewSet(viewsets.ReadOnlyModelViewSet):
         .all()
     )
     serializer_class = CampusPathSerializer
+    pagination_class = GeoJsonPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_accessible', 'start_location', 'end_location']
 

@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'django_filters',
+    'drf_spectacular',
 ]
 
 LOCAL_APPS = [
@@ -149,6 +150,24 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# ─── drf-spectacular (OpenAPI 3.0) ────────────────────────────────────────
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'UniMap API',
+    'VERSION': '1.0.0',
+    'DESCRIPTION': (
+        'Spatial REST API powering UniMap — the smart campus navigation system '
+        'for Jigjiga University (JJU). Endpoints expose GeoJSON-compliant data '
+        'for campus buildings, facilities, and walkable paths, plus a '
+        'PostGIS-powered nearest-building lookup and a NetworkX routing engine.'
+    ),
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    'SORT_OPERATIONS': True,
 }
 
 # ─── CORS ─────────────────────────────────────────────────────────────────

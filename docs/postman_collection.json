@@ -1,0 +1,547 @@
+{
+  "info": {
+    "name": "UniMap API",
+    "_postman_id": "unimap-jju-campus-api",
+    "description": "Complete API collection for UniMap — Smart Campus Navigation System for Jigjiga University. All endpoints return GeoJSON-compliant responses. Import and set {{base_url}} to http://localhost:8000.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL of the UniMap backend API server."
+    }
+  ],
+  "item": [
+    {
+      "name": "Locations",
+      "description": "CampusLocation endpoints — buildings and points of interest on the JJU campus. All list responses are GeoJSON FeatureCollections.",
+      "item": [
+        {
+          "name": "List All Locations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/locations/?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", ""],
+              "query": [
+                { "key": "format", "value": "json" },
+                { "key": "page", "value": "1", "disabled": true },
+                { "key": "category", "value": "academic", "disabled": true },
+                { "key": "search", "value": "", "disabled": true }
+              ]
+            },
+            "description": "Returns a paginated GeoJSON FeatureCollection of all active campus locations (100 per page)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response is valid JSON', function () {",
+                  "    pm.response.to.be.json;",
+                  "});",
+                  "",
+                  "pm.test('Response is a GeoJSON FeatureCollection', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.type).to.eql('FeatureCollection');",
+                  "    pm.expect(json.features).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('First feature has a Point geometry', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.features.length).to.be.above(0);",
+                  "    pm.expect(json.features[0].geometry.type).to.eql('Point');",
+                  "});",
+                  "",
+                  "pm.test('Features contain expected properties', function () {",
+                  "    const props = pm.response.json().features[0].properties;",
+                  "    pm.expect(props).to.have.property('name');",
+                  "    pm.expect(props).to.have.property('slug');",
+                  "    pm.expect(props).to.have.property('category');",
+                  "    pm.expect(props).to.have.property('facilities');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Get Location by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/locations/1/?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", "1", ""],
+              "query": [{ "key": "format", "value": "json" }]
+            },
+            "description": "Returns a single GeoJSON Feature for the location with the given ID."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response type is Feature', function () {",
+                  "    pm.expect(pm.response.json().type).to.eql('Feature');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Filter by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/locations/?category=academic&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", ""],
+              "query": [
+                { "key": "category", "value": "academic", "description": "One of: academic, classroom, office, lab, library, dormitory, cafeteria, gate, facility" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Filter locations by category. Valid values: academic, classroom, office, lab, library, dormitory, cafeteria, gate, facility."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('All features match the requested category', function () {",
+                  "    const features = pm.response.json().features;",
+                  "    features.forEach(f => pm.expect(f.properties.category).to.eql('academic'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Search by Name or Description",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/locations/?search=main+entrance&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", ""],
+              "query": [
+                { "key": "search", "value": "main entrance" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Full-text search across the name and description fields."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Nearest Building",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/locations/nearest/?lat=9.357&lng=42.826&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", "nearest", ""],
+              "query": [
+                { "key": "lat", "value": "9.357", "description": "Latitude (WGS 84)" },
+                { "key": "lng", "value": "42.826", "description": "Longitude (WGS 84)" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Returns the single nearest active building to the given coordinate, ranked by PostGIS geodesic distance."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response is a GeoJSON Feature', function () {",
+                  "    pm.expect(pm.response.json().type).to.eql('Feature');",
+                  "});",
+                  "pm.test('Geometry is a Point', function () {",
+                  "    pm.expect(pm.response.json().geometry.type).to.eql('Point');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Paginate — Page 2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/locations/?page=2&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "locations", ""],
+              "query": [
+                { "key": "page", "value": "2" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Fetch the second page (locations 101–123) since PAGE_SIZE is 100."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Previous page link is present', function () {",
+                  "    pm.expect(pm.response.json().previous).to.not.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Facilities",
+      "description": "Facility endpoints — individual offices, labs, and rooms nested inside a CampusLocation.",
+      "item": [
+        {
+          "name": "List All Facilities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", ""],
+              "query": [
+                { "key": "format", "value": "json" },
+                { "key": "location", "value": "1", "disabled": true, "description": "Filter by parent CampusLocation ID" }
+              ]
+            },
+            "description": "Returns all facilities. Filter by parent location using ?location=<id>."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response is valid JSON', function () { pm.response.to.be.json; });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Get Facility by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/1/?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", "1", ""],
+              "query": [{ "key": "format", "value": "json" }]
+            },
+            "description": "Returns a single facility record."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Filter Facilities by Location",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/facilities/?location=1&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "facilities", ""],
+              "query": [
+                { "key": "location", "value": "1", "description": "Parent CampusLocation PK" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Returns facilities belonging to the specified CampusLocation."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Routing",
+      "description": "CampusPath endpoints for walkable path segments and the future routing engine.",
+      "item": [
+        {
+          "name": "List All Paths",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/routing/paths/?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "routing", "paths", ""],
+              "query": [
+                { "key": "format", "value": "json" },
+                { "key": "is_accessible", "value": "true", "disabled": true, "description": "Filter to wheelchair-accessible paths only" }
+              ]
+            },
+            "description": "Returns a GeoJSON FeatureCollection of all CampusPath segments. Filter by is_accessible=true/false."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response is a GeoJSON FeatureCollection', function () {",
+                  "    pm.expect(pm.response.json().type).to.eql('FeatureCollection');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Get Path by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/routing/paths/1/?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "routing", "paths", "1", ""],
+              "query": [{ "key": "format", "value": "json" }]
+            },
+            "description": "Returns a single CampusPath GeoJSON Feature."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 or 404', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Compute Route (Placeholder)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/routing/route/?start=1&end=10&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "routing", "route", ""],
+              "query": [
+                { "key": "start", "value": "1", "description": "Start CampusLocation ID" },
+                { "key": "end", "value": "10", "description": "End CampusLocation ID" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Routing engine placeholder — returns HTTP 501 until NetworkX services.py is implemented."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 501 (not yet implemented)', function () {",
+                  "    pm.response.to.have.status(501);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Filter Accessible Paths",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/routing/paths/?is_accessible=true&format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "routing", "paths", ""],
+              "query": [
+                { "key": "is_accessible", "value": "true" },
+                { "key": "format", "value": "json" }
+              ]
+            },
+            "description": "Returns only wheelchair/mobility-accessible path segments."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('All paths are accessible', function () {",
+                  "    const features = pm.response.json().features;",
+                  "    features.forEach(f => pm.expect(f.properties.is_accessible).to.be.true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Documentation",
+      "description": "OpenAPI 3.0 schema and interactive documentation endpoints.",
+      "item": [
+        {
+          "name": "OpenAPI 3.0 Schema (YAML)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/schema/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "schema", ""]
+            },
+            "description": "Downloads the raw OpenAPI 3.0 schema in YAML format."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Swagger UI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/docs/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "docs", ""]
+            },
+            "description": "Interactive Swagger UI documentation for the UniMap API."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "ReDoc",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redoc/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redoc", ""]
+            },
+            "description": "ReDoc documentation view for the UniMap API."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ]
+}
