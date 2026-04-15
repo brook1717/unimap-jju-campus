@@ -6,4 +6,4 @@ from .models import Facility
 class FacilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Facility
-        fields = ('id', 'name', 'description', 'location')
+        fields = ('id', 'name', 'description', 'image', 'location')
