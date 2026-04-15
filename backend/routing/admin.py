@@ -5,5 +5,6 @@ from .models import CampusPath
 
 @admin.register(CampusPath)
 class CampusPathAdmin(admin.OSMGeoAdmin):
-    list_display = ('start_location', 'end_location', 'distance_in_meters')
-    search_fields = ('start_location__name', 'end_location__name')
+    list_display = ('__str__', 'distance_in_meters', 'is_accessible')
+    list_filter = ('is_accessible',)
+    search_fields = ('name', 'start_location__name', 'end_location__name')

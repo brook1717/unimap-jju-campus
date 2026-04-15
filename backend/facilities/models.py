@@ -6,6 +6,7 @@ from locations.models import CampusLocation
 class Facility(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='facilities/', blank=True, null=True)
     location = models.ForeignKey(
         CampusLocation,
         on_delete=models.CASCADE,
@@ -13,6 +14,7 @@ class Facility(models.Model):
     )
 
     class Meta:
+        ordering = ['name']
         verbose_name_plural = 'facilities'
 
     def __str__(self):

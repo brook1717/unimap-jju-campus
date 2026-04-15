@@ -1,3 +1,125 @@
 name,category,description,latitude,longitude
-Main Gate,gate,Primary entrance to Jigjiga University campus,9.3580,42.8135
-Administration Block,office,Central administration and registrar offices,9.3585,42.8140
+Point 1,academics,Academic building for administrative and research activities.,9.3570471,42.8266182
+Point 2,dining,Dining facility offering food and refreshments.,9.3574388,42.8264251
+Point 3,dormitory,Student residential accommodation.,9.3579204,42.8263822
+Point 4,teaching blocks,Lecture halls and classrooms for teaching.,9.3580369,42.827042
+Point 5,academics,Academic building for administrative and research activities.,9.3575764,42.8270259
+Point 6,dining,Dining facility offering food and refreshments.,9.3571423,42.8271761
+Point 7,dormitory,Student residential accommodation.,9.3572429,42.8276911
+Point 8,teaching blocks,Lecture halls and classrooms for teaching.,9.357587,42.8276857
+Point 9,academics,Academic building for administrative and research activities.,9.3579469,42.8275409
+Point 10,dining,Dining facility offering food and refreshments.,9.3578516,42.8281631
+Point 11,dormitory,Student residential accommodation.,9.3574388,42.8280183
+Point 12,teaching blocks,Lecture halls and classrooms for teaching.,9.3571265,42.8280719
+Point 13,academics,Academic building for administrative and research activities.,9.3576611,42.8286728
+Point 14,dining,Dining facility offering food and refreshments.,9.3584233,42.8285494
+Point 15,dormitory,Student residential accommodation.,9.3580474,42.8286942
+Point 16,teaching blocks,Lecture halls and classrooms for teaching.,9.3576981,42.8293004
+Point 17,academics,Academic building for administrative and research activities.,9.3578251,42.8298583
+Point 18,dining,Dining facility offering food and refreshments.,9.3581427,42.8298583
+Point 19,dormitory,Student residential accommodation.,9.3585503,42.8292575
+Point 20,teaching blocks,Lecture halls and classrooms for teaching.,9.3586456,42.8297295
+Point 21,academics,Academic building for administrative and research activities.,9.3586985,42.8300997
+Point 22,dining,Dining facility offering food and refreshments.,9.3584338,42.8302928
+Point 23,dormitory,Student residential accommodation.,9.3581798,42.8302123
+Point 24,teaching blocks,Lecture halls and classrooms for teaching.,9.3578834,42.8305986
+Point 25,academics,Academic building for administrative and research activities.,9.3582645,42.8307112
+Point 26,dining,Dining facility offering food and refreshments.,9.3585503,42.8306522
+Point 27,dormitory,Student residential accommodation.,9.3587991,42.8306147
+Point 28,teaching blocks,Lecture halls and classrooms for teaching.,9.3591113,42.830561
+Point 29,academics,Academic building for administrative and research activities.,9.3594395,42.8305235
+Point 30,dining,Dining facility offering food and refreshments.,9.3589843,42.8300085
+Point 31,dormitory,Student residential accommodation.,9.3593019,42.8299656
+Point 32,teaching blocks,Lecture halls and classrooms for teaching.,9.359196,42.8291716
+Point 33,academics,Academic building for administrative and research activities.,9.3593231,42.8297242
+Point 34,dining,Dining facility offering food and refreshments.,9.358889,42.8280666
+Point 35,dormitory,Student residential accommodation.,9.3583386,42.8278627
+Point 36,teaching blocks,Lecture halls and classrooms for teaching.,9.3586244,42.8274765
+Point 37,academics,Academic building for administrative and research activities.,9.3589049,42.8272995
+Point 38,dining,Dining facility offering food and refreshments.,9.3584762,42.8268971
+Point 39,dormitory,Student residential accommodation.,9.3584074,42.8263822
+Point 40,teaching blocks,Lecture halls and classrooms for teaching.,9.358762,42.8264894
+Point 41,academics,Academic building for administrative and research activities.,9.3591113,42.826468
+Point 42,dining,Dining facility offering food and refreshments.,9.3592119,42.8268918
+Point 43,dormitory,Student residential accommodation.,9.3588732,42.8270152
+Point 44,teaching blocks,Lecture halls and classrooms for teaching.,9.3592384,42.8273477
+Point 45,academics,Academic building for administrative and research activities.,9.35972,42.8262427
+Point 46,dining,Dining facility offering food and refreshments.,9.3595401,42.8265806
+Point 47,dormitory,Student residential accommodation.,9.3599476,42.8265699
+Point 48,teaching blocks,Lecture halls and classrooms for teaching.,9.3598471,42.8271224
+Point 49,academics,Academic building for administrative and research activities.,9.3599106,42.8275623
+Point 50,dining,Dining facility offering food and refreshments.,9.3597571,42.8282865
+Point 51,dormitory,Student residential accommodation.,9.3602123,42.8270259
+Point 52,teaching blocks,Lecture halls and classrooms for teaching.,9.3603181,42.826468
+Point 53,academics,Academic building for administrative and research activities.,9.3601858,42.8260388
+Point 54,dining,Dining facility offering food and refreshments.,9.3605358,42.8258336
+Point 55,dormitory,Student residential accommodation.,9.3607687,42.8259507
+Point 56,teaching blocks,Lecture halls and classrooms for teaching.,9.3606576,42.8264228
+Point 57,academics,Academic building for administrative and research activities.,9.3610016,42.8264523
+Point 58,dining,Dining facility offering food and refreshments.,9.3608084,42.8264925
+Point 59,dormitory,Student residential accommodation.,9.3609116,42.8268117
+Point 60,teaching blocks,Lecture halls and classrooms for teaching.,9.3614945,42.8261619
+Point 61,academics,Academic building for administrative and research activities.,9.3617856,42.8260654
+Point 62,dining,Dining facility offering food and refreshments.,9.3618333,42.8266849
+Point 63,dormitory,Student residential accommodation.,9.3619127,42.8272509
+Point 64,teaching blocks,Lecture halls and classrooms for teaching.,9.3616083,42.827157
+Point 65,academics,Academic building for administrative and research activities.,9.361521,42.8264891
+Point 66,dining,Dining facility offering food and refreshments.,9.361738,42.8278302
+Point 67,dormitory,Student residential accommodation.,9.3618994,42.8280368
+Point 68,teaching blocks,Lecture halls and classrooms for teaching.,9.3615501,42.8278544
+Point 69,academics,Academic building for administrative and research activities.,9.3612749,42.82768
+Point 70,dining,Dining facility offering food and refreshments.,9.3613252,42.8280284
+Point 71,dormitory,Student residential accommodation.,9.36087,42.8276154
+Point 72,teaching blocks,Lecture halls and classrooms for teaching.,9.3609573,42.8280713
+Point 73,academics,Academic building for administrative and research activities.,9.3610579,42.8284495
+Point 74,dining,Dining facility offering food and refreshments.,9.3614601,42.8287204
+Point 75,dormitory,Student residential accommodation.,9.3614839,42.828581
+Point 76,teaching blocks,Lecture halls and classrooms for teaching.,9.3611928,42.8291496
+Point 77,academics,Academic building for administrative and research activities.,9.3609361,42.8295734
+Point 78,dining,Dining facility offering food and refreshments.,9.3608276,42.8288626
+Point 79,dormitory,Student residential accommodation.,9.3606847,42.8281894
+Point 80,teaching blocks,Lecture halls and classrooms for teaching.,9.3605365,42.8292596
+Point 81,academics,Academic building for administrative and research activities.,9.3604439,42.8285675
+Point 82,dining,Dining facility offering food and refreshments.,9.3607853,42.8302359
+Point 83,dormitory,Student residential accommodation.,9.3603486,42.8299596
+Point 84,teaching blocks,Lecture halls and classrooms for teaching.,9.3599966,42.8296485
+Point 85,academics,Academic building for administrative and research activities.,9.3604995,42.8306583
+Point 86,dining,Dining facility offering food and refreshments.,9.3601289,42.8303525
+Point 87,dormitory,Student residential accommodation.,9.3597584,42.8300494
+Point 88,teaching blocks,Lecture halls and classrooms for teaching.,9.3598564,42.830728
+Point 89,academics,Academic building for administrative and research activities.,9.3602983,42.8312216
+Point 90,dining,Dining facility offering food and refreshments.,9.3601501,42.8309426
+Point 91,dormitory,Student residential accommodation.,9.3599066,42.8313449
+Point 92,teaching blocks,Lecture halls and classrooms for teaching.,9.3607218,42.8311518
+Point 93,academics,Academic building for administrative and research activities.,9.3608673,42.830771
+Point 94,dining,Dining facility offering food and refreshments.,9.3617168,42.8299287
+Point 95,dormitory,Student residential accommodation.,9.3614998,42.8305886
+Point 96,teaching blocks,Lecture halls and classrooms for teaching.,9.3616374,42.8317231
+Point 97,academics,Academic building for administrative and research activities.,9.3625611,42.8305054
+Point 98,dining,Dining facility offering food and refreshments.,9.3625372,42.8319484
+Point 99,dormitory,Student residential accommodation.,9.3633233,42.8324768
+Point 100,teaching blocks,Lecture halls and classrooms for teaching.,9.3627834,42.8331474
+Point 101,academics,Academic building for administrative and research activities.,9.3603248,42.8325627
+Point 102,dining,Dining facility offering food and refreshments.,9.362746,42.8265078
+Point 103,dormitory,Student residential accommodation.,9.3628095,42.8271301
+Point 104,teaching blocks,Lecture halls and classrooms for teaching.,9.3628889,42.8277202
+Point 105,academics,Academic building for administrative and research activities.,9.3633335,42.8270657
+Point 106,dining,Dining facility offering food and refreshments.,9.3633811,42.8276772
+Point 107,dormitory,Student residential accommodation.,9.3632753,42.8264542
+Point 108,teaching blocks,Lecture halls and classrooms for teaching.,9.363921,42.8267117
+Point 109,academics,Academic building for administrative and research activities.,9.3620843,42.8282834
+Point 110,dining,Dining facility offering food and refreshments.,9.3621214,42.8292115
+Point 111,dormitory,Student residential accommodation.,9.3603499,42.8278732
+Point 112,teaching blocks,Lecture halls and classrooms for teaching.,9.3605934,42.8274869
+Point 113,academics,Academic building for administrative and research activities.,9.3605617,42.826972
+Point 114,dining,Dining facility offering food and refreshments.,9.3574652,42.8256523
+Point 115,dormitory,Student residential accommodation.,9.3563749,42.8257757
+Point 116,teaching blocks,Lecture halls and classrooms for teaching.,9.3561155,42.826693
+Point 117,academics,Academic building for administrative and research activities.,9.3565284,42.8275191
+Point 118,dining,Dining facility offering food and refreshments.,9.3560679,42.8270632
+Point 119,dormitory,Student residential accommodation.,9.3569889,42.8300619
+Point 120,teaching blocks,Lecture halls and classrooms for teaching.,9.3575182,42.8307485
+Point 121,academics,Academic building for administrative and research activities.,9.3587303,42.8313279
+Point 122,dining,Dining facility offering food and refreshments.,9.3646734,42.8267498
+Polygon 126,dormitory,Student residential accommodation.,,
+Main Entrance,teaching blocks,Lecture halls and classrooms for teaching.,9.3571324,42.8243195
