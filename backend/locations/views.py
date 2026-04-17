@@ -1,16 +1,22 @@
+import logging
+
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
+from django.db.models import Case, IntegerField, Value, When
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework_gis.pagination import GeoJsonPagination
 
+from unimap_backend.exceptions import error_response
 from .models import CampusLocation
 from .serializers import CampusLocationSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -23,7 +29,72 @@ class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = GeoJsonPagination
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category']
-    search_fields = ['name', 'description']
+    # Search across name, category value, and description — all case-insensitive
+    search_fields = ['name', 'category', 'description']
+
+    def get_queryset(self):
+        """
+        Extend the base queryset to rank search results by exactness when a
+        ?search= query is present:
+          0 — exact name match  (Library)
+          1 — name starts with  (Lib…)
+          2 — partial / category / description match
+        Ordering is preserved by GeoJsonPagination.
+        """
+        qs = super().get_queryset()
+        q  = self.request.query_params.get('search', '').strip()
+        if q:
+            qs = qs.annotate(
+                _search_rank=Case(
+                    When(name__iexact=q,       then=Value(0)),
+                    When(name__istartswith=q,  then=Value(1)),
+                    default=Value(2),
+                    output_field=IntegerField(),
+                )
+            ).order_by('_search_rank', 'name')
+        return qs
+
+    # ── autocomplete ──────────────────────────────────────────────────────────
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'q', OpenApiTypes.STR, OpenApiParameter.QUERY,
+                required=False,
+                description='Partial name to match (case-insensitive). Returns up to 20 results.',
+            ),
+        ],
+        description=(
+            'Lightweight suggestion list for a frontend search box. '
+            'Returns `[{id, name, slug, category}, …]` — no geometry, no pagination.'
+        ),
+    )
+    @action(detail=False, methods=['get'], url_path='autocomplete')
+    def autocomplete(self, request):
+        """
+        GET /api/locations/autocomplete/?q=lib
+        Returns up to 20 {id, name, slug, category} dicts for instant suggestions.
+        No pagination, no geometry — designed for fast typeahead.
+        """
+        q  = request.query_params.get('q', '').strip()
+        qs = CampusLocation.objects.filter(is_active=True)
+        if q:
+            qs = qs.filter(name__icontains=q).annotate(
+                _rank=Case(
+                    When(name__iexact=q,      then=Value(0)),
+                    When(name__istartswith=q, then=Value(1)),
+                    default=Value(2),
+                    output_field=IntegerField(),
+                )
+            ).order_by('_rank', 'name')
+        else:
+            qs = qs.order_by('name')
+
+        data = list(qs.values('id', 'name', 'slug', 'category')[:20])
+        logger.debug('Autocomplete q=%r → %d result(s)', q, len(data))
+        return Response(data)
+
+    # ── nearest ───────────────────────────────────────────────────────────────
 
     @extend_schema(
         parameters=[
@@ -53,19 +124,13 @@ class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
         lng_raw = request.query_params.get('lng')
 
         if not lat_raw or not lng_raw:
-            return Response(
-                {'detail': 'lat and lng query parameters are required.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            return error_response('lat and lng query parameters are required.', 400)
 
         try:
             lat = float(lat_raw)
             lng = float(lng_raw)
         except ValueError:
-            return Response(
-                {'detail': 'lat and lng must be valid decimal numbers.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            return error_response('lat and lng must be valid decimal numbers.', 400)
 
         ref_point = Point(lng, lat, srid=4326)
 
@@ -79,10 +144,7 @@ class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         if location is None:
-            return Response(
-                {'detail': 'No active locations found.'},
-                status=status.HTTP_404_NOT_FOUND,
-            )
+            return error_response('No active locations found.', 404)
 
         serializer = self.get_serializer(location)
         return Response(serializer.data)

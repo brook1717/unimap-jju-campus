@@ -11,12 +11,16 @@ Graph layout
 """
 
 import json
+import logging
 import math
 import threading
+import time
 from pathlib import Path
 
 import networkx as nx
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 # ── Haversine helper ──────────────────────────────────────────────────────────
@@ -86,6 +90,8 @@ class PathfindingService:
 
     def _build_graph(self) -> nx.Graph:
         topo_path = _resolve_topology_path()
+        t0 = time.perf_counter()
+
         with open(topo_path, encoding='utf-8') as fh:
             fc = json.load(fh)
 
@@ -113,6 +119,11 @@ class PathfindingService:
                 building=props.get('building_name'),
             )
 
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info(
+            'Graph loaded from %s: %d nodes, %d edges in %.1f ms',
+            topo_path, G.number_of_nodes(), G.number_of_edges(), elapsed_ms,
+        )
         return G
 
     # ── Public API ────────────────────────────────────────────────────────────
@@ -142,6 +153,8 @@ class PathfindingService:
         total_dist  : sum of edge weights in metres
         route_coords: flat [[lon, lat], …] coordinate sequence for a LineString
         """
+        t0 = time.perf_counter()
+
         def heuristic(u: int, v: int) -> float:
             nu, nv = self.graph.nodes[u], self.graph.nodes[v]
             return _haversine_m(nu['x'], nu['y'], nv['x'], nv['y'])
@@ -158,6 +171,12 @@ class PathfindingService:
         )
 
         route_coords = self._reconstruct_geometry(path)
+
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        logger.info(
+            'A* %d->%d: %d hops, %.1f m, %.1f ms',
+            start_node, end_node, len(path), total_dist, elapsed_ms,
+        )
         return path, total_dist, route_coords
 
     # ── Geometry reconstruction ───────────────────────────────────────────────

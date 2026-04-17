@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.core.exceptions import ValidationError
 
 from locations.models import CampusLocation
 
@@ -35,6 +36,12 @@ class CampusPath(models.Model):
         default=True,
         help_text='Whether this path is navigable by wheelchair or similar mobility aid',
     )
+
+    def clean(self):
+        if self.path_line is not None and self.path_line.length < 1e-10:
+            raise ValidationError(
+                {'path_line': 'Path line cannot be zero-length.'}
+            )
 
     def __str__(self):
         if self.name:

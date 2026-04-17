@@ -151,6 +151,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'EXCEPTION_HANDLER': 'unimap_backend.exceptions.custom_exception_handler',
 }
 
 # ─── drf-spectacular (OpenAPI 3.0) ────────────────────────────────────────
@@ -178,6 +179,47 @@ TOPOLOGY_GEOJSON_PATH = os.environ.get(
     'TOPOLOGY_GEOJSON_PATH',
     str(BASE_DIR.parent / 'data' / 'topology_paths.geojson'),
 )
+
+# ─── Logging ────────────────────────────────────────────────────────────────
+# App loggers ('routing', 'locations', 'unimap_backend') log at DEBUG.
+# Root logger stays at WARNING to suppress noisy third-party output.
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        'routing': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'locations': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'unimap_backend': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
 
 # ─── CORS ─────────────────────────────────────────────────────────────────
 # Explicit allow-list for cross-origin requests.  In DEBUG mode the wildcard
