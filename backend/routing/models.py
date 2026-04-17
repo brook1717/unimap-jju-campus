@@ -7,15 +7,28 @@ class CampusPath(models.Model):
     name = models.CharField(max_length=255, blank=True)
     start_location = models.ForeignKey(
         CampusLocation,
-        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
         related_name='paths_starting_at',
     )
     end_location = models.ForeignKey(
         CampusLocation,
-        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
         related_name='paths_ending_at',
     )
-    # spatial_index=True (default) creates a PostGIS GIST index on path_line
+    start_node_id = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text='Topology graph node ID for the start endpoint',
+    )
+    end_node_id = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text='Topology graph node ID for the end endpoint',
+    )
     path_line = models.LineStringField(srid=4326, spatial_index=True)
     distance_in_meters = models.FloatField()
     is_accessible = models.BooleanField(
@@ -24,4 +37,8 @@ class CampusPath(models.Model):
     )
 
     def __str__(self):
-        return self.name or f'{self.start_location.name} → {self.end_location.name}'
+        if self.name:
+            return self.name
+        start = self.start_location.name if self.start_location_id else f'node_{self.start_node_id}'
+        end   = self.end_location.name   if self.end_location_id   else f'node_{self.end_node_id}'
+        return f'{start} -> {end}'

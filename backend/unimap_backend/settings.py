@@ -170,6 +170,15 @@ SPECTACULAR_SETTINGS = {
     'SORT_OPERATIONS': True,
 }
 
+# ─── Routing / Topology ──────────────────────────────────────────────────
+# Absolute path to the pre-built GeoJSON network file.  Override via the
+# TOPOLOGY_GEOJSON_PATH environment variable (useful in Docker where the
+# data/ volume is mounted at /data/).
+TOPOLOGY_GEOJSON_PATH = os.environ.get(
+    'TOPOLOGY_GEOJSON_PATH',
+    str(BASE_DIR.parent / 'data' / 'topology_paths.geojson'),
+)
+
 # ─── CORS ─────────────────────────────────────────────────────────────────
 # Explicit allow-list for cross-origin requests.  In DEBUG mode the wildcard
 # is also enabled for convenience; set DEBUG=False in production and update
