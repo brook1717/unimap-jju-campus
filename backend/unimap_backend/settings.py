@@ -226,9 +226,12 @@ LOGGING = {
 # is also enabled for convenience; set DEBUG=False in production and update
 # CORS_ALLOWED_ORIGINS with your deployed frontend URL.
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',   # Vite dev server
+    'http://localhost:5173',    # Vite default
+    'http://localhost:5174',    # Vite fallback (port in use)
     'http://127.0.0.1:5173',
-    'http://localhost:3000',
+    'http://127.0.0.1:5174',
+    'http://localhost:3000',    # CRA / alternate dev server
+    'http://127.0.0.1:3000',
 ]
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # True in dev, False in prod
 

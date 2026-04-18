@@ -78,6 +78,13 @@ class PathfindingService:
                     cls._instance = inst
         return cls._instance
 
+    @classmethod
+    def reset_instance(cls) -> None:
+        """Discard the singleton so the next call to PathfindingService()
+        creates a fresh instance.  **For use in tests only.**"""
+        with cls._lock:
+            cls._instance = None
+
     # ── Graph access ──────────────────────────────────────────────────────────
 
     @property
