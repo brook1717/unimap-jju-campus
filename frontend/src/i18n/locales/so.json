@@ -22,5 +22,16 @@
   "directions_to_here": "Jiheynta halkan",
   "back": "Dib u noqo",
   "about_description": "UniMap waa nidaam casri ah oo loogu talagalay hagista jaamacadda Jigjiga. Raadi dhismayaasha, hel jiheynta socodka, oo sahami jaamacadda si fudud.",
-  "developer": "Sameeyaha"
+  "developer": "Sameeyaha",
+  "navigation": "Hagitaan",
+  "start_point": "Bilowga",
+  "end_point": "Meelsha",
+  "my_location": "Gobtayda",
+  "search_start": "Raadi goobta bilowga\u2026",
+  "calculating_route": "Waddada la xisaabinayaa\u2026",
+  "no_path_found": "Ma jirto waddo lugeed oo u dhexeysa labadan goob.",
+  "distance": "Masaafo",
+  "walking_time": "Waqtiga socodka",
+  "cancel_nav": "Jooji",
+  "swap_points": "Beddel"
 }

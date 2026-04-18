@@ -12,6 +12,9 @@ const api = axios.create({
 export const fetchLocations = () => api.get('/locations/')
 export const fetchAutocomplete = (q) => api.get('/locations/autocomplete/', { params: { q } })
 export const fetchFacilities = (locationId) => api.get(`/facilities/?location=${locationId}`)
-export const fetchRoute = (startId, endId) => api.get(`/routes/?start=${startId}&end=${endId}`)
+export const fetchDirections = (startId, endId) =>
+  api.get('/routing/directions/', { params: { start_location_id: startId, end_location_id: endId } })
+export const fetchNearestLocation = (lat, lng) =>
+  api.get('/locations/nearest/', { params: { lat, lng } })
 
 export default api

@@ -6,9 +6,8 @@ import L from 'leaflet';
 import { Crosshair } from 'lucide-react';
 import { userLocationIcon } from '../../utils/mapIcons';
 
-export default function LocateControl() {
+export default function LocateControl({ userPosition, onUserPosition }) {
   const map = useMap();
-  const [userPos, setUserPos] = useState(null);
   const [locating, setLocating] = useState(false);
 
   // Persistent DOM node for the Leaflet control
@@ -25,14 +24,14 @@ export default function LocateControl() {
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const latlng = [coords.latitude, coords.longitude];
-        setUserPos(latlng);
+        onUserPosition?.(latlng);
         map.flyTo(latlng, 18, { duration: 1.2 });
         setLocating(false);
       },
       () => setLocating(false),
       { enableHighAccuracy: true, timeout: 10000 },
     );
-  }, [map]);
+  }, [map, onUserPosition]);
 
   // Register the control with Leaflet's bottomright container
   useEffect(() => {
@@ -62,9 +61,9 @@ export default function LocateControl() {
       )}
 
       {/* User-position marker (pulsing blue dot) */}
-      {userPos && (
+      {userPosition && (
         <Marker
-          position={userPos}
+          position={userPosition}
           icon={userLocationIcon}
           zIndexOffset={1000}
         />

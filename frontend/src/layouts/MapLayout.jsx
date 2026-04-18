@@ -4,16 +4,27 @@ import { fetchLocations } from '../services/api';
 
 import CampusMap from '../components/map/CampusMap';
 import MapMarkers from '../components/map/MapMarkers';
+import RouteLayer from '../components/map/RouteLayer';
 import LocateControl from '../components/map/LocateControl';
 import SearchCard from '../components/ui/SearchCard';
 import LocationDetailsCard from '../components/ui/LocationDetailsCard';
+import NavigationCard from '../components/ui/NavigationCard';
 import MenuButton from '../components/ui/MenuButton';
 import SideDrawer from '../components/ui/SideDrawer';
+
+/*
+  UI modes:  'search'     – SearchCard visible
+             'details'    – LocationDetailsCard visible
+             'navigation' – NavigationCard + RouteLayer visible
+*/
 
 export default function MapLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [uiMode, setUiMode] = useState('search');
+  const [routeData, setRouteData] = useState(null);
+  const [userPosition, setUserPosition] = useState(null);
 
   useEffect(() => {
     fetchLocations()
@@ -21,15 +32,39 @@ export default function MapLayout() {
       .catch((err) => console.error('Failed to load locations:', err));
   }, []);
 
+  /* ── Callbacks ──────────────────────────────────────────────────────── */
+
   const handleLocationSelect = useCallback(
     (id) => {
       const loc = locations.find((l) => l.id === id);
-      if (loc) setSelectedLocation(loc);
+      if (loc) {
+        setSelectedLocation(loc);
+        setUiMode('details');
+      }
     },
     [locations],
   );
 
-  const clearSelection = useCallback(() => setSelectedLocation(null), []);
+  const clearSelection = useCallback(() => {
+    setSelectedLocation(null);
+    setRouteData(null);
+    setUiMode('search');
+  }, []);
+
+  const startNavigation = useCallback((loc) => {
+    setSelectedLocation(loc);
+    setRouteData(null);
+    setUiMode('navigation');
+  }, []);
+
+  const cancelNavigation = useCallback(() => {
+    setRouteData(null);
+    setUiMode('details');
+  }, []);
+
+  const handleRouteReady = useCallback((data) => {
+    setRouteData(data ?? null);
+  }, []);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -38,27 +73,41 @@ export default function MapLayout() {
         <MapMarkers
           locations={locations}
           selectedLocationId={selectedLocation?.id}
-          onSelect={(loc) => setSelectedLocation(loc)}
+          onSelect={(loc) => {
+            setSelectedLocation(loc);
+            setUiMode('details');
+          }}
         />
-        <LocateControl />
+        <RouteLayer route={routeData} />
+        <LocateControl
+          userPosition={userPosition}
+          onUserPosition={setUserPosition}
+        />
       </CampusMap>
 
       {/* ── Floating UI layer (above map) ──────────────────────────────── */}
-      <AnimatePresence>
-        {selectedLocation && (
+      <AnimatePresence mode="wait">
+        {uiMode === 'details' && selectedLocation && (
           <LocationDetailsCard
             key="details"
             location={selectedLocation}
             onClose={clearSelection}
-            onDirections={(loc) => {
-              /* Day 19 — routing integration */
-              console.log('Directions to:', loc.properties.name);
-            }}
+            onDirections={startNavigation}
+          />
+        )}
+
+        {uiMode === 'navigation' && selectedLocation && (
+          <NavigationCard
+            key="navigation"
+            destination={selectedLocation}
+            userPosition={userPosition}
+            onRouteReady={handleRouteReady}
+            onCancel={cancelNavigation}
           />
         )}
       </AnimatePresence>
 
-      {!selectedLocation && (
+      {uiMode === 'search' && (
         <SearchCard onLocationSelect={handleLocationSelect} />
       )}
 

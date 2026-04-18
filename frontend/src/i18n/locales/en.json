@@ -22,5 +22,16 @@
   "directions_to_here": "Directions to Here",
   "back": "Back",
   "about_description": "UniMap is a smart campus navigation system designed for Jigjiga University. Find buildings, get walking directions, and explore the campus with ease.",
-  "developer": "Developer"
+  "developer": "Developer",
+  "navigation": "Navigation",
+  "start_point": "Start",
+  "end_point": "Destination",
+  "my_location": "My Location",
+  "search_start": "Search for a starting point\u2026",
+  "calculating_route": "Calculating route\u2026",
+  "no_path_found": "No walking path found between these points.",
+  "distance": "Distance",
+  "walking_time": "Walking Time",
+  "cancel_nav": "Cancel",
+  "swap_points": "Swap"
 }

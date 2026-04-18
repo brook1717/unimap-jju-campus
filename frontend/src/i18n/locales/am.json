@@ -22,5 +22,16 @@
   "directions_to_here": "ወደዚህ አቅጣጫ",
   "back": "ተመለስ",
   "about_description": "UniMap ለጅጅጋ ዩኒቨርሲቲ ግቢ የተዘጋጀ ዘመናዊ የካርታ ዳሰሳ ስርዓት ነው። ሕንፃዎችን ያግኙ፣ የእግር መንገድ ያግኙ፣ እና ግቢውን በቀላሉ ያስሱ።",
-  "developer": "ገንቢ"
+  "developer": "ገንቢ",
+  "navigation": "ዳሰሳ",
+  "start_point": "መነሻ",
+  "end_point": "መድረሻ",
+  "my_location": "የእኔ ቦታ",
+  "search_start": "የመነሻ ቦታ ይፈልጉ\u2026",
+  "calculating_route": "መንገድ በማስላት ላይ\u2026",
+  "no_path_found": "በእነዚህ ቦታዎች መካከል የእግር መንገድ አልተገኘም።",
+  "distance": "ርቀት",
+  "walking_time": "የእግር ጉዞ ጊዜ",
+  "cancel_nav": "ሰርዝ",
+  "swap_points": "ቀያይር"
 }
