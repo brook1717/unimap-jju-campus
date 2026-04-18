@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { fetchLocations } from '../services/api';
 
 import CampusMap from '../components/map/CampusMap';
 import MapMarkers from '../components/map/MapMarkers';
 import LocateControl from '../components/map/LocateControl';
 import SearchCard from '../components/ui/SearchCard';
+import LocationDetailsCard from '../components/ui/LocationDetailsCard';
 import MenuButton from '../components/ui/MenuButton';
 import SideDrawer from '../components/ui/SideDrawer';
 
@@ -27,6 +29,8 @@ export default function MapLayout() {
     [locations],
   );
 
+  const clearSelection = useCallback(() => setSelectedLocation(null), []);
+
   return (
     <div className="relative h-screen w-screen overflow-hidden">
       {/* ── Map canvas (full-screen, z-0) ──────────────────────────────── */}
@@ -40,7 +44,24 @@ export default function MapLayout() {
       </CampusMap>
 
       {/* ── Floating UI layer (above map) ──────────────────────────────── */}
-      <SearchCard onLocationSelect={handleLocationSelect} />
+      <AnimatePresence>
+        {selectedLocation && (
+          <LocationDetailsCard
+            key="details"
+            location={selectedLocation}
+            onClose={clearSelection}
+            onDirections={(loc) => {
+              /* Day 19 — routing integration */
+              console.log('Directions to:', loc.properties.name);
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {!selectedLocation && (
+        <SearchCard onLocationSelect={handleLocationSelect} />
+      )}
+
       <MenuButton
         isOpen={drawerOpen}
         onClick={() => setDrawerOpen((v) => !v)}

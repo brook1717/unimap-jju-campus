@@ -18,5 +18,9 @@
   "lab": "Shaybaarka",
   "classroom": "Fasalka",
   "app_tagline": "Hagista Jaamacadda",
-  "no_results": "Goob lama helin"
+  "no_results": "Goob lama helin",
+  "directions_to_here": "Jiheynta halkan",
+  "back": "Dib u noqo",
+  "about_description": "UniMap waa nidaam casri ah oo loogu talagalay hagista jaamacadda Jigjiga. Raadi dhismayaasha, hel jiheynta socodka, oo sahami jaamacadda si fudud.",
+  "developer": "Sameeyaha"
 }

@@ -18,5 +18,9 @@
   "lab": "\u120b\u1266\u122b\u1276\u122a",
   "classroom": "\u12ad\u134d\u1208-\u1275\u121d\u1215\u122d\u1275",
   "app_tagline": "\u12d8\u1218\u1293\u12ca \u12e8\u12ab\u121d\u1353\u1235 \u12f3\u1230\u1233",
-  "no_results": "ምንም ቦታ አልተገኘም"
+  "no_results": "ምንም ቦታ አልተገኘም",
+  "directions_to_here": "ወደዚህ አቅጣጫ",
+  "back": "ተመለስ",
+  "about_description": "UniMap ለጅጅጋ ዩኒቨርሲቲ ግቢ የተዘጋጀ ዘመናዊ የካርታ ዳሰሳ ስርዓት ነው። ሕንፃዎችን ያግኙ፣ የእግር መንገድ ያግኙ፣ እና ግቢውን በቀላሉ ያስሱ።",
+  "developer": "ገንቢ"
 }
