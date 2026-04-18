@@ -24,3 +24,81 @@
     display: none;
   }
 }
+
+/* ── Custom campus markers ───────────────────────────────────────────── */
+.campus-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 0 2px #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.campus-marker:hover {
+  transform: scale(1.18);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22), 0 0 0 2px #fff;
+}
+
+/* ── User location — pulsing blue dot ────────────────────────────────── */
+.user-marker {
+  position: relative;
+  width: 22px;
+  height: 22px;
+}
+.user-marker-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.25);
+  animation: user-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.user-marker-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+@keyframes user-pulse {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ── Locate-me control button ────────────────────────────────────────── */
+.locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #475569;
+  transition: background 0.15s, color 0.15s;
+}
+.locate-btn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+/* ── Popup overrides for a cleaner look ──────────────────────────────── */
+.campus-popup .leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  padding: 0;
+}
+.campus-popup .leaflet-popup-content {
+  margin: 10px 14px;
+}
+.campus-popup .leaflet-popup-tip {
+  box-shadow: none;
+}
