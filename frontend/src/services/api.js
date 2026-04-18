@@ -10,6 +10,7 @@ const api = axios.create({
 })
 
 export const fetchLocations = () => api.get('/locations/')
+export const fetchAutocomplete = (q) => api.get('/locations/autocomplete/', { params: { q } })
 export const fetchFacilities = (locationId) => api.get(`/facilities/?location=${locationId}`)
 export const fetchRoute = (startId, endId) => api.get(`/routes/?start=${startId}&end=${endId}`)
 

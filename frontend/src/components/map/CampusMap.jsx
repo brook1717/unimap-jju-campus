@@ -1,8 +1,9 @@
 import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import '../../utils/fixLeafletIcons';
 import { CAMPUS_CENTER, DEFAULT_ZOOM } from '../../utils/constants';
+import FlyToHandler from './FlyToHandler';
 
-export default function CampusMap({ children }) {
+export default function CampusMap({ children, selectedLocation }) {
   return (
     <MapContainer
       center={CAMPUS_CENTER}
@@ -17,6 +18,7 @@ export default function CampusMap({ children }) {
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         subdomains="abcd"
       />
+      <FlyToHandler target={selectedLocation} />
       {/* Children render before ZoomControl so LocateControl sits above it */}
       {children}
       <ZoomControl position="bottomright" />

@@ -17,5 +17,6 @@
   "office": "Office",
   "lab": "Lab",
   "classroom": "Classroom",
-  "app_tagline": "Smart Campus Navigation"
+  "app_tagline": "Smart Campus Navigation",
+  "no_results": "No locations found"
 }
