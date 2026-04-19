@@ -1,0 +1,8 @@
+{
+  "appId": "com.unimap.jju",
+  "appName": "UniMap",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
