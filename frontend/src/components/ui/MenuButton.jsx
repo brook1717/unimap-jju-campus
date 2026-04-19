@@ -12,7 +12,11 @@ export default function MenuButton({ isOpen, onClick }) {
         flex h-11 w-11 items-center justify-center
         rounded-full bg-white shadow-md
         text-slate-700
-        transition-colors hover:bg-slate-50 active:bg-slate-100
+        transition-all hover:bg-slate-50
+        active:scale-95 active:bg-slate-100
+        dark:bg-slate-800 dark:text-slate-200
+        dark:shadow-slate-950/40
+        dark:hover:bg-slate-700 dark:active:bg-slate-600
       "
     >
       <Icon className="h-5 w-5" />

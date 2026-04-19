@@ -33,5 +33,8 @@
   "distance": "Masaafo",
   "walking_time": "Waqtiga socodka",
   "cancel_nav": "Jooji",
-  "swap_points": "Beddel"
+  "swap_points": "Beddel",
+  "theme": "Muuqaalka",
+  "dark_mode": "Habeen",
+  "light_mode": "Maalin"
 }

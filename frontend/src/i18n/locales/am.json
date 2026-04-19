@@ -33,5 +33,8 @@
   "distance": "ርቀት",
   "walking_time": "የእግር ጉዞ ጊዜ",
   "cancel_nav": "ሰርዝ",
-  "swap_points": "ቀያይር"
+  "swap_points": "ቀያይር",
+  "theme": "ገጽታ",
+  "dark_mode": "ጥቁር ገጽታ",
+  "light_mode": "ብሩህ ገጽታ"
 }

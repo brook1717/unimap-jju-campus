@@ -113,9 +113,9 @@ export default function SearchCard({ onLocationSelect }) {
   const searchInput = (
     <div className="relative">
       {loading ? (
-        <Loader2 className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 animate-spin" />
+        <Loader2 className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 dark:text-slate-500 animate-spin" />
       ) : (
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 dark:text-slate-500" />
       )}
 
       <input
@@ -126,11 +126,13 @@ export default function SearchCard({ onLocationSelect }) {
         onFocus={handleInputFocus}
         placeholder={t('search_placeholder')}
         className="
-          w-full rounded-lg bg-slate-50 py-2.5 pl-10 pr-10
+          w-full rounded-lg bg-slate-50 py-2.5 pl-10 pr-10 min-h-[44px]
           text-sm text-slate-900 placeholder:text-slate-400
           outline-none ring-1 ring-slate-200
           transition-shadow
           focus:ring-2 focus:ring-brand-primary/30
+          dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500
+          dark:ring-slate-700 dark:focus:ring-brand-primary/40
         "
       />
 
@@ -141,7 +143,7 @@ export default function SearchCard({ onLocationSelect }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300"
           >
             <X className="h-4 w-4" />
           </motion.button>
@@ -160,12 +162,12 @@ export default function SearchCard({ onLocationSelect }) {
             onClick={() => setActiveChip(key)}
             className={`
               inline-flex shrink-0 items-center gap-1.5 rounded-full
-              px-3 py-1.5 text-xs font-medium
-              transition-colors
+              px-3 py-1.5 min-h-[36px] text-xs font-medium
+              transition-all active:scale-95
               ${
                 active
                   ? 'bg-brand-primary text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
               }
             `}
           >
@@ -177,10 +179,24 @@ export default function SearchCard({ onLocationSelect }) {
     </div>
   );
 
+  const skeletonRows = (
+    <div className="space-y-1 py-2">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="flex items-center gap-3 px-3 py-2.5">
+          <div className="h-8 w-8 shrink-0 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse" />
+          <div className="flex-1 space-y-1.5">
+            <div className="h-3.5 w-3/4 rounded bg-slate-200 dark:bg-slate-700 animate-pulse" />
+            <div className="h-3 w-1/3 rounded bg-slate-200 dark:bg-slate-700 animate-pulse" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   const resultsList = (
-    <div className="border-t border-slate-100 mt-2 pt-1">
-      {results.length === 0 && !loading ? (
-        <p className="py-8 text-center text-sm text-slate-400">
+    <div className="border-t border-slate-100 dark:border-slate-800 mt-2 pt-1">
+      {loading ? skeletonRows : results.length === 0 ? (
+        <p className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">
           {hasQuery ? t('no_results') : ''}
         </p>
       ) : (
@@ -190,18 +206,19 @@ export default function SearchCard({ onLocationSelect }) {
               key={item.id}
               onClick={() => handleSelect(item)}
               className="
-                flex w-full items-center gap-3 rounded-lg px-3 py-2.5
-                text-left transition-colors hover:bg-slate-50
+                flex w-full items-center gap-3 rounded-lg px-3 py-2.5 min-h-[44px]
+                text-left transition-all hover:bg-slate-50 active:scale-[0.98]
+                dark:hover:bg-slate-800
               "
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-sm">
                 {CATEGORY_EMOJI[item.category] || '📍'}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-slate-900">
+                <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
                   {item.name}
                 </p>
-                <p className="text-xs capitalize text-slate-500">
+                <p className="text-xs capitalize text-slate-500 dark:text-slate-400">
                   {item.category}
                 </p>
               </div>
@@ -216,7 +233,7 @@ export default function SearchCard({ onLocationSelect }) {
   if (isDesktop) {
     return (
       <div className="absolute z-10 top-4 left-4 w-96">
-        <div className="bg-white rounded-xl shadow-lg p-4">
+        <div className="bg-white rounded-xl shadow-lg p-4 dark:bg-slate-900 dark:shadow-slate-950/50">
           {searchInput}
           {filterChips}
           <AnimatePresence>
@@ -241,7 +258,7 @@ export default function SearchCard({ onLocationSelect }) {
   return (
     <div className="fixed z-10 bottom-0 left-0 right-0">
       <motion.div
-        className="bg-white rounded-t-2xl shadow-lg flex flex-col overflow-hidden"
+        className="bg-white rounded-t-2xl shadow-lg flex flex-col overflow-hidden dark:bg-slate-900 dark:shadow-slate-950/50"
         animate={expanded ? 'expanded' : 'collapsed'}
         variants={{
           collapsed: { height: 'auto' },
@@ -265,7 +282,7 @@ export default function SearchCard({ onLocationSelect }) {
           }}
         >
           <div className="flex justify-center pt-2.5 pb-1">
-            <span className="block h-1 w-10 rounded-full bg-slate-300" />
+            <span className="block h-1 w-10 rounded-full bg-slate-300 dark:bg-slate-600" />
           </div>
         </motion.div>
 

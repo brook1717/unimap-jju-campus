@@ -174,9 +174,9 @@ export default function NavigationCard({
       {startMode === 'search' ? (
         <div className="relative flex-1">
           {searchingStart ? (
-            <Loader2 className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-slate-400" />
+            <Loader2 className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-slate-400 dark:text-slate-500" />
           ) : (
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           )}
           <input
             ref={inputRef}
@@ -185,20 +185,22 @@ export default function NavigationCard({
             onChange={(e) => setStartQuery(e.target.value)}
             placeholder={t('search_start')}
             className="
-              w-full rounded-md bg-slate-50 py-2 pl-9 pr-3
+              w-full rounded-md bg-slate-50 py-2 pl-9 pr-3 min-h-[44px]
               text-sm text-slate-900 placeholder:text-slate-400
               outline-none ring-1 ring-slate-200
               focus:ring-2 focus:ring-brand-primary/30
+              dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500
+              dark:ring-slate-700 dark:focus:ring-brand-primary/40
             "
           />
         </div>
       ) : (
         <button
           onClick={openStartSearch}
-          className="flex-1 truncate rounded-md bg-slate-50 px-3 py-2 text-left text-sm text-slate-700 ring-1 ring-slate-200 transition-colors hover:bg-slate-100"
+          className="flex-1 truncate rounded-md bg-slate-50 px-3 py-2 min-h-[44px] text-left text-sm text-slate-700 ring-1 ring-slate-200 transition-all hover:bg-slate-100 active:scale-[0.98] dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:hover:bg-slate-700"
         >
           {resolvingGps ? (
-            <span className="flex items-center gap-2 text-slate-400">
+            <span className="flex items-center gap-2 text-slate-400 dark:text-slate-500">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               {t('calculating_route')}
             </span>
@@ -208,7 +210,7 @@ export default function NavigationCard({
               {startLoc.name}
             </span>
           ) : (
-            <span className="text-slate-400">{t('search_start')}</span>
+            <span className="text-slate-400 dark:text-slate-500">{t('search_start')}</span>
           )}
         </button>
       )}
@@ -220,29 +222,29 @@ export default function NavigationCard({
       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-primary">
         <span className="block h-2 w-2 rounded-full bg-white" />
       </span>
-      <div className="flex-1 truncate rounded-md bg-slate-50 px-3 py-2 text-sm font-medium text-slate-900 ring-1 ring-slate-200">
+      <div className="flex-1 truncate rounded-md bg-slate-50 px-3 py-2 min-h-[44px] flex items-center text-sm font-medium text-slate-900 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-white dark:ring-slate-700">
         {endLoc?.name ?? '—'}
       </div>
     </div>
   );
 
   const searchResults = startMode === 'search' && startQuery.trim() && (
-    <div className="mt-1 max-h-48 overflow-y-auto overscroll-contain border-t border-slate-100 pt-1">
+    <div className="mt-1 max-h-48 overflow-y-auto overscroll-contain border-t border-slate-100 dark:border-slate-800 pt-1">
       {startResults.length === 0 && !searchingStart ? (
-        <p className="py-4 text-center text-xs text-slate-400">{t('no_results')}</p>
+        <p className="py-4 text-center text-xs text-slate-400 dark:text-slate-500">{t('no_results')}</p>
       ) : (
         startResults.map((item) => (
           <button
             key={item.id}
             onClick={() => handleStartSelect(item)}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-slate-50"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 min-h-[44px] text-left transition-all hover:bg-slate-50 active:scale-[0.98] dark:hover:bg-slate-800"
           >
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs">
               {CATEGORY_EMOJI[item.category] || '📍'}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-slate-900">{item.name}</p>
-              <p className="text-xs capitalize text-slate-500">{item.category}</p>
+              <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{item.name}</p>
+              <p className="text-xs capitalize text-slate-500 dark:text-slate-400">{item.category}</p>
             </div>
           </button>
         ))
@@ -253,7 +255,7 @@ export default function NavigationCard({
   const gpsButton = startMode === 'search' && userPosition && (
     <button
       onClick={useMyLocation}
-      className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-emerald-600 transition-colors hover:bg-emerald-50"
+      className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 min-h-[44px] text-left text-sm text-emerald-600 transition-all hover:bg-emerald-50 active:scale-[0.98] dark:text-emerald-400 dark:hover:bg-emerald-500/10"
     >
       <LocateFixed className="h-4 w-4" />
       {t('my_location')}
@@ -264,14 +266,14 @@ export default function NavigationCard({
     <motion.div
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: 'auto' }}
-      className="mt-3 flex items-center justify-center gap-6 rounded-lg bg-brand-primary/5 px-4 py-3"
+      className="mt-3 flex items-center justify-center gap-6 rounded-lg bg-brand-primary/5 px-4 py-3 dark:bg-brand-primary/10"
     >
-      <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+      <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200">
         <Footprints className="h-4 w-4 text-brand-primary" />
         {fmtDist(routeData.properties.total_distance_m)}
       </div>
-      <div className="h-4 w-px bg-slate-200" />
-      <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
+      <div className="h-4 w-px bg-slate-200 dark:bg-slate-700" />
+      <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200">
         <Clock className="h-4 w-4 text-brand-primary" />
         {fmtTime(routeData.properties.estimated_walking_time_min)}
       </div>
@@ -282,15 +284,15 @@ export default function NavigationCard({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="mt-3 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5"
+      className="mt-3 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 dark:border-red-800 dark:bg-red-950/50"
     >
       <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
-      <p className="text-sm text-red-700">{routeError}</p>
+      <p className="text-sm text-red-700 dark:text-red-300">{routeError}</p>
     </motion.div>
   );
 
   const loadingBar = routeLoading && (
-    <div className="mt-3 flex items-center justify-center gap-2 py-2 text-sm text-slate-400">
+    <div className="mt-3 flex items-center justify-center gap-2 py-2 text-sm text-slate-400 dark:text-slate-500">
       <Loader2 className="h-4 w-4 animate-spin" />
       {t('calculating_route')}
     </div>
@@ -301,10 +303,10 @@ export default function NavigationCard({
     <div className="p-4">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-900">{t('navigation')}</h3>
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{t('navigation')}</h3>
         <button
           onClick={onCancel}
-          className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+          className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition-all hover:bg-slate-100 hover:text-slate-600 active:scale-95 dark:text-slate-500 dark:hover:bg-slate-800 dark:hover:text-slate-300"
           aria-label={t('close')}
         >
           <X className="h-4 w-4" />
@@ -317,11 +319,11 @@ export default function NavigationCard({
 
         {/* Connector line + swap */}
         <div className="my-1.5 ml-[11px] flex items-center gap-2">
-          <div className="h-4 w-px border-l border-dashed border-slate-300" />
+          <div className="h-4 w-px border-l border-dashed border-slate-300 dark:border-slate-600" />
           <button
             onClick={handleSwap}
             title={t('swap_points')}
-            className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-600"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition-all hover:bg-slate-50 hover:text-slate-600 active:scale-90 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-300"
           >
             <ArrowUpDown className="h-3 w-3" />
           </button>
@@ -345,9 +347,10 @@ export default function NavigationCard({
       <button
         onClick={onCancel}
         className="
-          mt-4 w-full rounded-lg border border-slate-200
+          mt-4 w-full rounded-lg border border-slate-200 min-h-[44px]
           py-2.5 text-sm font-medium text-slate-600
-          transition-colors hover:bg-slate-50
+          transition-all hover:bg-slate-50 active:scale-[0.98]
+          dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800
         "
       >
         {t('cancel_nav')}
@@ -365,7 +368,7 @@ export default function NavigationCard({
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         className="absolute z-10 top-4 left-4 w-96"
       >
-        <div className="overflow-hidden rounded-xl bg-white shadow-lg">
+        <div className="overflow-hidden rounded-xl bg-white shadow-lg dark:bg-slate-900 dark:shadow-slate-950/50">
           {cardBody}
         </div>
       </motion.div>
@@ -381,9 +384,9 @@ export default function NavigationCard({
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
       className="fixed z-10 bottom-0 left-0 right-0"
     >
-      <div className="max-h-[85vh] overflow-y-auto overscroll-contain rounded-t-2xl bg-white shadow-lg">
-        <div className="sticky top-0 z-10 flex justify-center bg-white pt-2.5 pb-1">
-          <span className="block h-1 w-10 rounded-full bg-slate-300" />
+      <div className="max-h-[85vh] overflow-y-auto overscroll-contain rounded-t-2xl bg-white shadow-lg dark:bg-slate-900 dark:shadow-slate-950/50">
+        <div className="sticky top-0 z-10 flex justify-center bg-white pt-2.5 pb-1 dark:bg-slate-900">
+          <span className="block h-1 w-10 rounded-full bg-slate-300 dark:bg-slate-600" />
         </div>
         {cardBody}
       </div>

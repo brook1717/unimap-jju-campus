@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, Navigation } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ const PLACEHOLDER_IMG =
 export default function LocationDetailsCard({ location, onClose, onDirections }) {
   const { t } = useTranslation();
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   if (!location) return null;
 
@@ -39,27 +41,32 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
         onClick={onClose}
         className="
           absolute top-3 right-3 z-10
-          flex h-8 w-8 items-center justify-center
+          flex h-9 w-9 items-center justify-center
           rounded-full bg-white/80 backdrop-blur
           text-slate-600 shadow-sm
-          transition-colors hover:bg-white
+          transition-all hover:bg-white active:scale-95
+          dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-800
         "
         aria-label={t('close')}
       >
         <X className="h-4 w-4" />
       </button>
 
-      {/* Image */}
-      <div className="relative h-44 bg-slate-200">
+      {/* Image with skeleton */}
+      <div className="relative h-44 bg-slate-200 dark:bg-slate-800">
+        {!imgLoaded && (
+          <div className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" />
+        )}
         <img
           src={imageUrl}
           alt={name}
-          className="h-full w-full object-cover"
+          className={`h-full w-full object-cover transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
           loading="lazy"
           decoding="async"
+          onLoad={() => setImgLoaded(true)}
         />
         {/* Category badge */}
-        <div className="absolute bottom-2 left-3 flex items-center gap-1.5 rounded-full bg-white/90 backdrop-blur px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm">
+        <div className="absolute bottom-2 left-3 flex items-center gap-1.5 rounded-full bg-white/90 backdrop-blur px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm dark:bg-slate-800/90 dark:text-slate-200">
           <span>{emoji}</span>
           <span className="capitalize">{category}</span>
         </div>
@@ -67,12 +74,12 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
 
       {/* Body */}
       <div className="p-4">
-        <h3 className="text-lg font-bold text-slate-900 leading-snug">
+        <h3 className="text-lg font-bold text-slate-900 leading-snug dark:text-white">
           {name}
         </h3>
 
         {description && (
-          <p className="mt-2 text-sm text-slate-500 leading-relaxed line-clamp-3">
+          <p className="mt-2 text-sm text-slate-500 leading-relaxed line-clamp-3 dark:text-slate-400">
             {description}
           </p>
         )}
@@ -82,12 +89,12 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
           onClick={() => onDirections?.(location)}
           className="
             mt-4 flex w-full items-center justify-center gap-2
-            rounded-lg bg-brand-primary py-3 px-4
+            rounded-lg bg-brand-primary py-3 px-4 min-h-[44px]
             text-sm font-semibold text-white
             shadow-md
             transition-all
             hover:bg-brand-primary/90 hover:shadow-lg
-            active:scale-[0.98]
+            active:scale-[0.97]
           "
         >
           <Navigation className="h-4 w-4" />
@@ -107,7 +114,7 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         className="absolute z-10 top-4 left-4 w-96"
       >
-        <div className="relative overflow-hidden rounded-xl bg-white shadow-lg">
+        <div className="relative overflow-hidden rounded-xl bg-white shadow-lg dark:bg-slate-900 dark:shadow-slate-950/50">
           {cardContent}
         </div>
       </motion.div>
@@ -123,10 +130,10 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
       className="fixed z-10 bottom-0 left-0 right-0"
     >
-      <div className="relative max-h-[80vh] overflow-hidden overflow-y-auto overscroll-contain rounded-t-2xl bg-white shadow-lg">
+      <div className="relative max-h-[80vh] overflow-hidden overflow-y-auto overscroll-contain rounded-t-2xl bg-white shadow-lg dark:bg-slate-900 dark:shadow-slate-950/50">
         {/* Drag handle */}
-        <div className="sticky top-0 z-10 flex justify-center bg-white pt-2.5 pb-1">
-          <span className="block h-1 w-10 rounded-full bg-slate-300" />
+        <div className="sticky top-0 z-10 flex justify-center bg-white pt-2.5 pb-1 dark:bg-slate-900">
+          <span className="block h-1 w-10 rounded-full bg-slate-300 dark:bg-slate-600" />
         </div>
         {cardContent}
       </div>
