@@ -34,6 +34,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_gis',
     'django_filters',
     'drf_spectacular',
+    'leaflet',
 ]
 
 LOCAL_APPS = [
@@ -47,6 +48,27 @@ LOCAL_APPS = [
 AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# django-leaflet map widget settings (used in GIS admin)
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (9.3585, 42.8244),   # Jigjiga University
+    'DEFAULT_ZOOM': 16,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 19,
+    'TILES': [
+        (
+            'CartoDB Positron',
+            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            {
+                'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                'subdomains': 'abcd',
+                'maxZoom': 19,
+            },
+        ),
+    ],
+    'SCALE': 'both',
+    'RESET_VIEW': False,
+}
 
 MIDDLEWARE = [
     # CorsMiddleware MUST be placed as high as possible — before any middleware

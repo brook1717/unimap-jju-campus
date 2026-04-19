@@ -4,6 +4,7 @@ djangorestframework-gis>=1.0
 django-filter>=23.5
 django-cors-headers>=4.3.1
 drf-spectacular>=0.27.0
+django-leaflet>=0.30.0
 shapely>=2.0
 geopandas>=0.14
 psycopg2-binary>=2.9.9
