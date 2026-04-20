@@ -2,6 +2,7 @@ import glob
 import os
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 # Load .env file when present (local dev).  Docker passes vars via environment:,
@@ -75,6 +76,7 @@ MIDDLEWARE = [
     # that generates responses (e.g. CommonMiddleware, WhiteNoiseMiddleware).
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -104,17 +106,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'unimap_backend.wsgi.application'
 
 # ─── Database (PostgreSQL + PostGIS) ───────────────────────────────────────
+# Prefer DATABASE_URL when set (production / Docker).  Falls back to individual
+# POSTGRES_* env vars for backwards-compatibility with the existing compose file.
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ.get('POSTGRES_DB', 'unimap_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'unimap_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'unimap_pass'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'db'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+_DATABASE_URL = os.environ.get('DATABASE_URL', '')
+
+if _DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            _DATABASE_URL,
+            engine='django.contrib.gis.db.backends.postgis',
+        ),
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'NAME': os.environ.get('POSTGRES_DB', 'unimap_db'),
+            'USER': os.environ.get('POSTGRES_USER', 'unimap_user'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'unimap_pass'),
+            'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        }
+    }
 
 # ─── Password Validation ───────────────────────────────────────────────────
 
@@ -133,25 +147,21 @@ USE_I18N = True
 USE_TZ = True
 
 # ─── Static & Media Files ─────────────────────────────────────────────────
-# Local defaults — used when USE_S3 is not set or False.
-# To enable AWS S3, set USE_S3=True plus the AWS_* vars in .env.
 
-USE_S3 = os.environ.get('USE_S3', 'False') == 'True'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
-if USE_S3:
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
-    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    AWS_DEFAULT_ACL = 'public-read'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-else:
-    STATIC_URL = '/static/'
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+# WhiteNoise serves static files directly from the WSGI app — no nginx needed.
+# In dev (DEBUG=True) WHITENOISE_USE_FINDERS auto-serves un-collected files.
+WHITENOISE_USE_FINDERS = DEBUG
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -244,10 +254,15 @@ LOGGING = {
 }
 
 # ─── CORS ─────────────────────────────────────────────────────────────────
-# Explicit allow-list for cross-origin requests.  In DEBUG mode the wildcard
-# is also enabled for convenience; set DEBUG=False in production and update
-# CORS_ALLOWED_ORIGINS with your deployed frontend URL.
+# In production, set CORS_ALLOWED_ORIGINS as a comma-separated string in .env.
+# In DEBUG mode the wildcard is enabled for convenience.
+
+_cors_env = os.environ.get('CORS_ALLOWED_ORIGINS', '')
 CORS_ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in _cors_env.split(',')
+    if origin.strip()
+] if _cors_env else [
     'http://localhost:5173',    # Vite default
     'http://localhost:5174',    # Vite fallback (port in use)
     'http://127.0.0.1:5173',

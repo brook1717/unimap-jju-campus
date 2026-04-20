@@ -1,0 +1,19 @@
+# Development overrides — applied automatically when running `docker compose up`.
+# For production, use: docker compose -f docker-compose.yml up
+
+services:
+  web:
+    # Mount source code for hot-reload during development
+    volumes:
+      - ./backend:/app
+      - ./data:/data:ro
+    environment:
+      DEBUG: "True"
+      SECRET_KEY: dev-insecure-secret-key-change-in-production
+      ALLOWED_HOSTS: "localhost,127.0.0.1"
+      POSTGRES_DB: unimap_db
+      POSTGRES_USER: unimap_user
+      POSTGRES_PASSWORD: unimap_pass
+    # Override entrypoint to use runserver for dev
+    entrypoint: []
+    command: python manage.py runserver 0.0.0.0:8000
