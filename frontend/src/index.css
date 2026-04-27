@@ -136,3 +136,16 @@
   background-color: #334155;
   color: #e2e8f0;
 }
+
+/* ── Leaflet layers control — dark mode ───────────────────────────── */
+.dark .leaflet-control-layers {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+.dark .leaflet-control-layers-toggle {
+  background-color: #1e293b;
+}
+.dark .leaflet-control-layers-separator {
+  border-top-color: #334155;
+}

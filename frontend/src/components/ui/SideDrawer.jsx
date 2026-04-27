@@ -13,8 +13,6 @@ import {
   ExternalLink,
   Moon,
   Sun,
-  Linkedin,
-  Github,
   Users,
   Route,
   Database,
@@ -290,7 +288,7 @@ function ContactView() {
       href: 'mailto:brookkasahun@gmail.com',
     },
     {
-      icon: Linkedin,
+      icon: ExternalLink,
       label: 'LinkedIn',
       value: 'biruk-kasahun',
       href: 'https://www.linkedin.com/in/biruk-kasahun-684b682a6',
@@ -302,7 +300,7 @@ function ContactView() {
       href: 'https://birukkasahun.com/',
     },
     {
-      icon: Github,
+      icon: ExternalLink,
       label: 'GitHub',
       value: 'brook1717',
       href: 'https://github.com/brook1717',

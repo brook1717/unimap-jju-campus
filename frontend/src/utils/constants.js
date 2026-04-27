@@ -3,8 +3,8 @@ export const CAMPUS_CENTER = [9.3585, 42.8244]
 export const DEFAULT_ZOOM = 16
 
 export const CAMPUS_BOUNDS = [
-  [9.3520, 42.8180],
-  [9.3650, 42.8310],
+  [9.3500, 42.8150],   // South-West
+  [9.3650, 42.8350],   // North-East
 ]
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'

@@ -1,13 +1,22 @@
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, LayersControl, ZoomControl } from 'react-leaflet';
 import '../../utils/fixLeafletIcons';
-import { CAMPUS_CENTER, DEFAULT_ZOOM } from '../../utils/constants';
+import { CAMPUS_CENTER, DEFAULT_ZOOM, CAMPUS_BOUNDS } from '../../utils/constants';
 import FlyToHandler from './FlyToHandler';
 import useTheme from '../../hooks/useTheme';
 
-const TILE_URLS = {
+const STREET_TILES = {
   light: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
   dark:  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
 };
+
+const SATELLITE_URL =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+
+const STREET_ATTR =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+const SATELLITE_ATTR =
+  'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
 
 export default function CampusMap({ children, selectedLocation }) {
   const { theme } = useTheme();
@@ -20,13 +29,28 @@ export default function CampusMap({ children, selectedLocation }) {
       className="h-full w-full z-0"
       minZoom={14}
       maxZoom={19}
+      maxBounds={CAMPUS_BOUNDS}
+      maxBoundsViscosity={1.0}
     >
-      <TileLayer
-        key={theme}
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url={TILE_URLS[theme] || TILE_URLS.light}
-        subdomains="abcd"
-      />
+      <LayersControl position="topright">
+        <LayersControl.BaseLayer name="Street View">
+          <TileLayer
+            key={`street-${theme}`}
+            attribution={STREET_ATTR}
+            url={STREET_TILES[theme] || STREET_TILES.light}
+            subdomains="abcd"
+          />
+        </LayersControl.BaseLayer>
+
+        <LayersControl.BaseLayer checked name="Satellite">
+          <TileLayer
+            attribution={SATELLITE_ATTR}
+            url={SATELLITE_URL}
+            maxZoom={19}
+          />
+        </LayersControl.BaseLayer>
+      </LayersControl>
+
       <FlyToHandler target={selectedLocation} />
       {children}
       <ZoomControl position="bottomright" />
