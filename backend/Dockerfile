@@ -35,7 +35,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     binutils \
     libproj-dev \
     gdal-bin \
-    libgdal34 \
     libgeos-c1v5 \
     libpq5 \
     && ldconfig \

@@ -3,14 +3,23 @@ import L from 'leaflet';
 // ── Category → emoji lookup (one icon instance per category, cached) ─────────
 
 const CATEGORY_EMOJI = {
-  academic:  '🎓',
-  office:    '🏢',
-  library:   '📚',
-  dormitory: '🏠',
-  cafeteria: '🍽️',
-  gate:      '🚪',
-  facility:  '⚙️',
-  lab:       '🔬',
+  academic:         '🎓',
+  administrative:   '🏛️',
+  cafeteria:        '�️',
+  campus_facility:  '🏗️',
+  classroom:        '�',
+  college:          '🏫',
+  dining:           '🍽️',
+  dormitory:        '🏠',
+  facility:         '⚙️',
+  gate:             '🚪',
+  lab:              '🔬',
+  lecture_hall:      '🎤',
+  library:          '📚',
+  office:           '🏢',
+  recreation:       '🌳',
+  student_services: '🏥',
+  utility:          '�',
 };
 
 const iconCache = {};

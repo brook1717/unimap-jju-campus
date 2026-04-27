@@ -17,7 +17,7 @@ export default defineConfig({
         name: 'UniMap JJU',
         short_name: 'UniMap',
         description: 'Smart campus navigation for Jigjiga University',
-        start_url: './',
+        start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#1E4D8C',
@@ -89,7 +89,21 @@ export default defineConfig({
       },
     }),
   ],
-  base: './',
+  base: '/',
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-map': ['leaflet', 'react-leaflet'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-i18n': ['i18next', 'react-i18next'],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {

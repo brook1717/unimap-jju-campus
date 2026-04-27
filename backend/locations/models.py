@@ -4,15 +4,23 @@ from django.utils.text import slugify
 
 class CampusLocation(models.Model):
     CATEGORY_CHOICES = [
-        ('academic', 'Academic'),
-        ('classroom', 'Classroom'),
-        ('office', 'Office'),
-        ('lab', 'Lab'),
-        ('library', 'Library'),
-        ('dormitory', 'Dormitory'),
+        ('academic', 'Academic Facility'),
+        ('administrative', 'Administrative'),
         ('cafeteria', 'Cafeteria'),
-        ('gate', 'Gate'),
-        ('facility', 'Facility'),
+        ('campus_facility', 'Campus Facility'),
+        ('classroom', 'Classroom Block'),
+        ('college', 'College Faculty'),
+        ('dining', 'Dining & Recreation'),
+        ('dormitory', 'Dormitory'),
+        ('facility', 'General Facility'),
+        ('gate', 'Campus Entrance'),
+        ('lab', 'Laboratory'),
+        ('lecture_hall', 'Lecture Hall'),
+        ('library', 'Library'),
+        ('office', 'Office'),
+        ('recreation', 'Recreation'),
+        ('student_services', 'Student Services'),
+        ('utility', 'Utility'),
     ]
 
     name = models.CharField(max_length=255)
