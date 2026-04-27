@@ -10,12 +10,21 @@ export const CAMPUS_BOUNDS = [
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
 
 export const LOCATION_CATEGORIES = [
-  { value: 'academic', label: 'Academic Block' },
-  { value: 'office', label: 'Office' },
-  { value: 'lab', label: 'Laboratory' },
-  { value: 'library', label: 'Library' },
-  { value: 'dormitory', label: 'Dormitory' },
+  { value: 'academic', label: 'Academic Facility' },
+  { value: 'administrative', label: 'Administrative' },
   { value: 'cafeteria', label: 'Cafeteria' },
-  { value: 'gate', label: 'Gate' },
-  { value: 'facility', label: 'Facility' },
+  { value: 'campus_facility', label: 'Campus Facility' },
+  { value: 'classroom', label: 'Classroom Block' },
+  { value: 'college', label: 'College Faculty' },
+  { value: 'dining', label: 'Dining & Recreation' },
+  { value: 'dormitory', label: 'Dormitory' },
+  { value: 'facility', label: 'General Facility' },
+  { value: 'gate', label: 'Campus Entrance' },
+  { value: 'lab', label: 'Laboratory' },
+  { value: 'lecture_hall', label: 'Lecture Hall' },
+  { value: 'library', label: 'Library' },
+  { value: 'office', label: 'Office' },
+  { value: 'recreation', label: 'Recreation' },
+  { value: 'student_services', label: 'Student Services' },
+  { value: 'utility', label: 'Utility' },
 ]

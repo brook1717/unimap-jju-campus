@@ -1,24 +1,30 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Navigation } from 'lucide-react';
+import { X, Navigation, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import useMediaQuery from '../../hooks/useMediaQuery';
 
 /* ── Helpers ──────────────────────────────────────────────────────────── */
 
 const CATEGORY_EMOJI = {
-  academic:  '🎓',
-  office:    '🏢',
-  library:   '📚',
-  dormitory: '🏠',
-  cafeteria: '🍽️',
-  gate:      '🚪',
-  facility:  '⚙️',
-  lab:       '🔬',
+  academic:         '🎓',
+  administrative:   '🏛️',
+  cafeteria:        '�️',
+  campus_facility:  '🏗️',
+  classroom:        '�',
+  college:          '🏫',
+  dining:           '🍽️',
+  dormitory:        '🏠',
+  facility:         '⚙️',
+  gate:             '🚪',
+  lab:              '🔬',
+  lecture_hall:      '🎤',
+  library:          '�',
+  office:           '🏢',
+  recreation:       '🌳',
+  student_services: '🏥',
+  utility:          '🔧',
 };
-
-const PLACEHOLDER_IMG =
-  'https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=300&fit=crop&q=80';
 
 /* ── Component ────────────────────────────────────────────────────────── */
 
@@ -26,11 +32,12 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
   const { t } = useTranslation();
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   if (!location) return null;
 
-  const { name, category, description, photo } = location.properties;
-  const imageUrl = photo || PLACEHOLDER_IMG;
+  const { name, category, description, image } = location.properties;
+  const hasImage = !!image && !imgError;
   const emoji = CATEGORY_EMOJI[category] || '📍';
 
   /* ── Shared card content ──────────────────────────────────────────── */
@@ -52,19 +59,28 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
         <X className="h-4 w-4" />
       </button>
 
-      {/* Image with skeleton */}
+      {/* Image / fallback */}
       <div className="relative h-44 bg-slate-200 dark:bg-slate-800">
-        {!imgLoaded && (
-          <div className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" />
+        {hasImage ? (
+          <>
+            {!imgLoaded && (
+              <div className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" />
+            )}
+            <img
+              src={image}
+              alt={name}
+              className={`h-full w-full object-cover transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgError(true)}
+            />
+          </>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 dark:from-slate-800 dark:via-slate-750 dark:to-slate-700">
+            <MapPin className="h-10 w-10 text-slate-400/60 dark:text-slate-500/60" />
+          </div>
         )}
-        <img
-          src={imageUrl}
-          alt={name}
-          className={`h-full w-full object-cover transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
-          loading="lazy"
-          decoding="async"
-          onLoad={() => setImgLoaded(true)}
-        />
         {/* Category badge */}
         <div className="absolute bottom-2 left-3 flex items-center gap-1.5 rounded-full bg-white/90 backdrop-blur px-2.5 py-1 text-xs font-medium text-slate-700 shadow-sm dark:bg-slate-800/90 dark:text-slate-200">
           <span>{emoji}</span>
