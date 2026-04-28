@@ -36,5 +36,11 @@
   "swap_points": "Swap",
   "theme": "Theme",
   "dark_mode": "Dark Mode",
-  "light_mode": "Light Mode"
+  "light_mode": "Light Mode",
+  "offline_banner": "You are currently offline. Search and routing are limited.",
+  "offline_no_directions": "Directions unavailable offline",
+  "search_buildings": "Search buildings, facilities",
+  "clear_search": "Clear search",
+  "swap_start_end": "Swap start and end",
+  "toggle_theme": "Toggle theme"
 }

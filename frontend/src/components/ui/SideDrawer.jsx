@@ -78,6 +78,8 @@ function MenuView({ t, i18n, switchLanguage, onNavigate, theme, toggleTheme }) {
               <button
                 key={code}
                 onClick={() => switchLanguage(code)}
+                aria-label={name}
+                aria-pressed={i18n.language === code}
                 className={`
                   flex flex-1 flex-col items-center gap-0.5
                   rounded-lg border px-3 py-2.5 min-h-[44px]
@@ -105,6 +107,7 @@ function MenuView({ t, i18n, switchLanguage, onNavigate, theme, toggleTheme }) {
         </div>
         <button
           onClick={toggleTheme}
+          aria-label={t('toggle_theme')}
           className="
             flex w-full items-center justify-between
             rounded-lg border border-slate-200 px-4 py-3 min-h-[44px]
@@ -423,6 +426,7 @@ export default function SideDrawer({ isOpen, onClose }) {
               {view !== 'menu' ? (
                 <button
                   onClick={() => setView('menu')}
+                  aria-label={t('back')}
                   className="flex items-center gap-2 text-slate-500 transition-colors hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                 >
                   <ArrowLeft className="h-4 w-4" />

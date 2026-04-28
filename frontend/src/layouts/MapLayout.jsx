@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { fetchLocations } from '../services/api';
+import useOnlineStatus from '../hooks/useOnlineStatus';
+import OfflineBanner from '../components/ui/OfflineBanner';
 
 import CampusMap from '../components/map/CampusMap';
 import MapMarkers from '../components/map/MapMarkers';
@@ -25,6 +27,7 @@ export default function MapLayout() {
   const [uiMode, setUiMode] = useState('search');
   const [routeData, setRouteData] = useState(null);
   const [userPosition, setUserPosition] = useState(null);
+  const isOnline = useOnlineStatus();
 
   useEffect(() => {
     fetchLocations()
@@ -68,6 +71,7 @@ export default function MapLayout() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
+      <OfflineBanner isOffline={!isOnline} />
       {/* ── Map canvas (full-screen, z-0) ──────────────────────────────── */}
       <CampusMap selectedLocation={selectedLocation}>
         <MapMarkers
@@ -93,6 +97,7 @@ export default function MapLayout() {
             location={selectedLocation}
             onClose={clearSelection}
             onDirections={startNavigation}
+            isOffline={!isOnline}
           />
         )}
 

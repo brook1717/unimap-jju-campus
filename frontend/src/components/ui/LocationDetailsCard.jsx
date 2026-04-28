@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Navigation, MapPin } from 'lucide-react';
+import { X, Navigation, MapPin, WifiOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import useMediaQuery from '../../hooks/useMediaQuery';
 
@@ -28,7 +28,7 @@ const CATEGORY_EMOJI = {
 
 /* ── Component ────────────────────────────────────────────────────────── */
 
-export default function LocationDetailsCard({ location, onClose, onDirections }) {
+export default function LocationDetailsCard({ location, onClose, onDirections, isOffline = false }) {
   const { t } = useTranslation();
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -102,19 +102,26 @@ export default function LocationDetailsCard({ location, onClose, onDirections })
 
         {/* CTA */}
         <button
-          onClick={() => onDirections?.(location)}
-          className="
+          onClick={() => !isOffline && onDirections?.(location)}
+          disabled={isOffline}
+          aria-label={t('directions_to_here')}
+          className={`
             mt-4 flex w-full items-center justify-center gap-2
-            rounded-lg bg-brand-primary py-3 px-4 min-h-[44px]
+            rounded-lg py-3 px-4 min-h-[44px]
             text-sm font-semibold text-white
-            shadow-md
-            transition-all
-            hover:bg-brand-primary/90 hover:shadow-lg
-            active:scale-[0.97]
-          "
+            shadow-md transition-all
+            ${isOffline
+              ? 'cursor-not-allowed bg-slate-300 shadow-none dark:bg-slate-700 dark:text-slate-400'
+              : 'bg-brand-primary hover:bg-brand-primary/90 hover:shadow-lg active:scale-[0.97]'
+            }
+          `}
         >
-          <Navigation className="h-4 w-4" />
-          {t('directions_to_here')}
+          {isOffline ? (
+            <WifiOff className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Navigation className="h-4 w-4" aria-hidden="true" />
+          )}
+          {isOffline ? t('offline_no_directions') : t('directions_to_here')}
         </button>
       </div>
     </>

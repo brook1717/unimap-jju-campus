@@ -28,7 +28,7 @@ Point 26 or Store,Utility,Campus storage facility and logistics center.,9.358550
 Point 27 or Store,Utility,Campus storage facility and logistics center.,9.3587991,42.8306147
 HALL 11 and HALL 12,Lecture Hall,Large-capacity lecture hall for major academic classes and university events.,9.3591113,42.830561
 HALL 13 and HALL 14,Lecture Hall,Large-capacity lecture hall for major academic classes and university events.,9.3594395,42.8305235
-HALL 7  and HALL 8,Lecture Hall,Large-capacity lecture hall for major academic classes and university events.,9.3589843,42.8300085
+HALL 7  and HALL 8,Lecture Hall,Large-capacity lecture hall for major academic classes and university events.,9.3589843,42.8300085
 HALL 9 and HALL 10,Lecture Hall,Large-capacity lecture hall for major academic classes and university events.,9.3593019,42.8299656
 Student's Caffe or Dining Hall(Main Caffe),Dining & Recreation,Primary dining hall catering to the student population.,9.359196,42.8291716
 Institutional Kitchen or Central Kitchen,Utility,Main culinary preparation center servicing campus dining halls.,9.3593231,42.8297242
@@ -109,8 +109,8 @@ Point 107,General Facility,Designated campus point or auxiliary facility.,9.3632
 Point 108,General Facility,Designated campus point or auxiliary facility.,9.363921,42.8267117
 Stadium,Recreation,Campus sports stadium used for athletic events and student recreation.,9.3620843,42.8282834
 Stadium,Recreation,Campus sports stadium used for athletic events and student recreation.,9.3621214,42.8292115
-Block 16 or B16,Dormitory,Student residential dormitory block providing on-campus housing.,9.3603499,42.8278732
-Blcok 14 or B14,Dormitory,Student residential dormitory block providing on-campus housing.,9.3605934,42.8274869
+Block 14 or B14,Dormitory,Student residential dormitory block providing on-campus housing.,9.3603499,42.8278732
+Block 15 or B15,Dormitory,Student residential dormitory block providing on-campus housing.,9.3605934,42.8274869
 BLOCK 11 or B11,Dormitory,Student residential dormitory block providing on-campus housing.,9.3605617,42.826972
 Jigjiga University Management Hall or Jigjiga University Administration Building,Administrative,Main administrative headquarters for university management and operations.,9.3574652,42.8256523
 Staff Lounge,Dining & Recreation,Dedicated recreational and relaxation facility for university staff.,9.3563749,42.8257757

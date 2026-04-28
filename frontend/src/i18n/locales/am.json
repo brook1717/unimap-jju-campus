@@ -36,5 +36,11 @@
   "swap_points": "ቀያይር",
   "theme": "ገጽታ",
   "dark_mode": "ጥቁር ገጽታ",
-  "light_mode": "ብሩህ ገጽታ"
+  "light_mode": "ብሩህ ገጽታ",
+  "offline_banner": "አሁን ከመስመር ውጪ ነዎት። ፍለጋ እና ዳሰሳ ውስን ናቸው።",
+  "offline_no_directions": "ከመስመር ውጪ አቅጣጫ አይገኝም",
+  "search_buildings": "ሕንፃዎችን፣ መገልገያዎችን ይፈልጉ",
+  "clear_search": "ፍለጋ አጽዳ",
+  "swap_start_end": "መነሻ እና መድረሻ ቀያይር",
+  "toggle_theme": "ገጽታ ቀያይር"
 }

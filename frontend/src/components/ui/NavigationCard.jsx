@@ -184,6 +184,7 @@ export default function NavigationCard({
             value={startQuery}
             onChange={(e) => setStartQuery(e.target.value)}
             placeholder={t('search_start')}
+            aria-label={t('search_start')}
             className="
               w-full rounded-md bg-slate-50 py-2 pl-9 pr-3 min-h-[44px]
               text-sm text-slate-900 placeholder:text-slate-400
@@ -255,9 +256,10 @@ export default function NavigationCard({
   const gpsButton = startMode === 'search' && userPosition && (
     <button
       onClick={useMyLocation}
+      aria-label={t('my_location')}
       className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 min-h-[44px] text-left text-sm text-emerald-600 transition-all hover:bg-emerald-50 active:scale-[0.98] dark:text-emerald-400 dark:hover:bg-emerald-500/10"
     >
-      <LocateFixed className="h-4 w-4" />
+      <LocateFixed className="h-4 w-4" aria-hidden="true" />
       {t('my_location')}
     </button>
   );
@@ -323,9 +325,10 @@ export default function NavigationCard({
           <button
             onClick={handleSwap}
             title={t('swap_points')}
+            aria-label={t('swap_start_end')}
             className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 transition-all hover:bg-slate-50 hover:text-slate-600 active:scale-90 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-300"
           >
-            <ArrowUpDown className="h-3 w-3" />
+            <ArrowUpDown className="h-3 w-3" aria-hidden="true" />
           </button>
         </div>
 

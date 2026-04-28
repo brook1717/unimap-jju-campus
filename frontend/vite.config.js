@@ -12,6 +12,8 @@ export default defineConfig({
         'icons/icon.svg',
         'icons/icon-192.png',
         'icons/icon-512.png',
+        'icons/icon-192-maskable.png',
+        'icons/icon-512-maskable.png',
       ],
       manifest: {
         name: 'UniMap JJU',
@@ -47,7 +49,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,webmanifest}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,

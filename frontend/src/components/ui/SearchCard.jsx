@@ -125,6 +125,7 @@ export default function SearchCard({ onLocationSelect }) {
         onChange={(e) => setQuery(e.target.value)}
         onFocus={handleInputFocus}
         placeholder={t('search_placeholder')}
+        aria-label={t('search_buildings')}
         className="
           w-full rounded-lg bg-slate-50 py-2.5 pl-10 pr-10 min-h-[44px]
           text-sm text-slate-900 placeholder:text-slate-400
@@ -143,9 +144,10 @@ export default function SearchCard({ onLocationSelect }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={handleClear}
+            aria-label={t('clear_search')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4" aria-hidden="true" />
           </motion.button>
         )}
       </AnimatePresence>

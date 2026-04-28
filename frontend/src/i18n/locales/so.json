@@ -36,5 +36,11 @@
   "swap_points": "Beddel",
   "theme": "Muuqaalka",
   "dark_mode": "Habeen",
-  "light_mode": "Maalin"
+  "light_mode": "Maalin",
+  "offline_banner": "Hadda khadka ka baxday. Raadinta iyo hagitaanku waa xaddidan yihiin.",
+  "offline_no_directions": "Jiheyntu ma heli karto khadka la'aan",
+  "search_buildings": "Raadi dhismo, adeeg",
+  "clear_search": "Nadiifi raadinta",
+  "swap_start_end": "Beddel bilowga iyo dhamaadka",
+  "toggle_theme": "Beddel muuqaalka"
 }
