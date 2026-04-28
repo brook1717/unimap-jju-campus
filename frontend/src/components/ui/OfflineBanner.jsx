@@ -16,7 +16,7 @@ export default function OfflineBanner({ isOffline }) {
           role="status"
           aria-live="assertive"
           className="
-            fixed top-0 left-0 right-0 z-50
+            w-full z-50
             flex items-center justify-center gap-2
             bg-amber-500 px-4 py-2
             text-xs font-medium text-white shadow-md

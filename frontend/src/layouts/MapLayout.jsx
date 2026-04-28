@@ -8,6 +8,7 @@ import CampusMap from '../components/map/CampusMap';
 import MapMarkers from '../components/map/MapMarkers';
 import RouteLayer from '../components/map/RouteLayer';
 import LocateControl from '../components/map/LocateControl';
+import RecenterControl from '../components/map/RecenterControl';
 import SearchCard from '../components/ui/SearchCard';
 import LocationDetailsCard from '../components/ui/LocationDetailsCard';
 import NavigationCard from '../components/ui/NavigationCard';
@@ -70,9 +71,10 @@ export default function MapLayout() {
   }, []);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <div className="relative flex h-screen w-screen flex-col overflow-hidden">
       <OfflineBanner isOffline={!isOnline} />
-      {/* ── Map canvas (full-screen, z-0) ──────────────────────────────── */}
+      {/* ── Map canvas (fills remaining space, z-0) ────────────────────── */}
+      <div className="relative flex-1 overflow-hidden">
       <CampusMap selectedLocation={selectedLocation}>
         <MapMarkers
           locations={locations}
@@ -87,6 +89,7 @@ export default function MapLayout() {
           userPosition={userPosition}
           onUserPosition={setUserPosition}
         />
+        <RecenterControl />
       </CampusMap>
 
       {/* ── Floating UI layer (above map) ──────────────────────────────── */}
@@ -124,6 +127,7 @@ export default function MapLayout() {
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
+      </div>
     </div>
   );
 }
