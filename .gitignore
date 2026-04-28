@@ -48,6 +48,22 @@ frontend/ios/
 *.swp
 *.swo
 
+# ─── Coverage & Reports ───────────────────────────────────────────────────
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+# ─── Docker (local volumes) ──────────────────────────────────────────────
+docker-data/
+
+# ─── Credentials & Keys ─────────────────────────────────────────────────
+*.pem
+*.key
+*.cert
+serviceAccountKey.json
+
 # ─── OS ────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+desktop.ini
