@@ -10,7 +10,7 @@ function DetailPanel({ location = null, onGetDirections }) {
   const hasImage = !!image && !imgError
 
   return (
-    <div className="p-4 border-t border-gray-100">
+    <div className="p-4 border-t border-slate-100 dark:border-slate-800">
       {hasImage ? (
         <img
           src={image}
@@ -23,14 +23,14 @@ function DetailPanel({ location = null, onGetDirections }) {
           <MapPin className="h-8 w-8 text-slate-400/60 dark:text-slate-500/60" />
         </div>
       )}
-      <h2 className="text-lg font-bold text-brand-primary">{name}</h2>
+      <h2 className="text-lg font-bold text-brand-primary dark:text-brand-primary">{name}</h2>
       <span className="inline-block text-xs font-medium text-white bg-brand-secondary px-2 py-0.5 rounded-full capitalize mt-1">
         {category}
       </span>
-      {description && <p className="mt-2 text-sm text-gray-600 leading-relaxed">{description}</p>}
+      {description && <p className="mt-2 text-sm text-slate-600 leading-relaxed dark:text-slate-400">{description}</p>}
       <button
         onClick={() => onGetDirections && onGetDirections(location)}
-        className="mt-4 w-full bg-brand-primary text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition-colors"
+        className="mt-4 w-full bg-brand-primary text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-brand-primary/90 transition-colors"
       >
         Get Directions
       </button>

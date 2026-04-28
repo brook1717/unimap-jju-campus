@@ -23,8 +23,23 @@ import {
 /* ── Helpers ──────────────────────────────────────────────────────────── */
 
 const CATEGORY_EMOJI = {
-  academic: '🎓', office: '🏢', library: '📚', dormitory: '🏠',
-  cafeteria: '🍽️', gate: '🚪', facility: '⚙️', lab: '🔬',
+  academic:         '🎓',
+  administrative:   '🏛️',
+  cafeteria:        '�️',
+  campus_facility:  '🏗️',
+  classroom:        '�',
+  college:          '🏫',
+  dining:           '🍽️',
+  dormitory:        '🏠',
+  facility:         '⚙️',
+  gate:             '🚪',
+  lab:              '🔬',
+  lecture_hall:      '🎤',
+  library:          '📚',
+  office:           '🏢',
+  recreation:       '🌳',
+  student_services: '🏥',
+  utility:          '�',
 };
 
 const fmtDist = (m) => (m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(1)} km`);

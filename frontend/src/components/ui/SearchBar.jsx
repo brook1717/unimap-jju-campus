@@ -16,7 +16,7 @@ function SearchBar({ onSearch }) {
         onChange={handleChange}
         placeholder="Search buildings, facilities..."
         aria-label="Search buildings, facilities"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary text-sm"
+        className="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-brand-primary dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
       />
     </div>
   )
