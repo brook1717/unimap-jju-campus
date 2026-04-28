@@ -40,6 +40,33 @@ export function createCategoryIcon(category) {
   return icon;
 }
 
+// ── Label icon (emoji + name below) — shown at high zoom ─────────────────────
+
+const labelCache = {};
+
+export function createLabelIcon(category, name) {
+  const key = `${category}::${name}`;
+  if (labelCache[key]) return labelCache[key];
+
+  const emoji = CATEGORY_EMOJI[category] || '📍';
+  const escapedName = name.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+
+  const icon = L.divIcon({
+    className: '',
+    html: `
+      <div class="campus-marker-labelled">
+        <div class="campus-marker"><span>${emoji}</span></div>
+        <span class="campus-marker-label">${escapedName}</span>
+      </div>`,
+    iconSize: [36, 50],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -22],
+  });
+
+  labelCache[key] = icon;
+  return icon;
+}
+
 // ── Pulsing blue-dot icon for the user's GPS position ────────────────────────
 
 export const userLocationIcon = L.divIcon({

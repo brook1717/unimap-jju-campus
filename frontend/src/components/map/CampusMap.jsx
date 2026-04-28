@@ -28,7 +28,7 @@ export default function CampusMap({ children, selectedLocation }) {
       zoomControl={false}
       className="h-full w-full z-0"
       minZoom={14}
-      maxZoom={19}
+      maxZoom={20}
       maxBounds={CAMPUS_BOUNDS}
       maxBoundsViscosity={1.0}
     >
@@ -39,6 +39,8 @@ export default function CampusMap({ children, selectedLocation }) {
             attribution={STREET_ATTR}
             url={STREET_TILES[theme] || STREET_TILES.light}
             subdomains="abcd"
+            maxNativeZoom={19}
+            maxZoom={20}
           />
         </LayersControl.BaseLayer>
 
@@ -46,7 +48,8 @@ export default function CampusMap({ children, selectedLocation }) {
           <TileLayer
             attribution={SATELLITE_ATTR}
             url={SATELLITE_URL}
-            maxZoom={19}
+            maxNativeZoom={18}
+            maxZoom={20}
           />
         </LayersControl.BaseLayer>
       </LayersControl>
