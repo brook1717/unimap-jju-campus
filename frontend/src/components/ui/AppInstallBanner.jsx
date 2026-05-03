@@ -76,7 +76,7 @@ export default function AppInstallBanner() {
 
         {/* CTA button */}
         <a
-          href="https://play.google.com/store/apps/details?id=com.unimap.jju"
+          href="https://play.google.com/store/apps/details?id=com.birukkasahun.unimap"
           target="_blank"
           rel="noopener noreferrer"
           className="

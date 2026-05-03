@@ -15,7 +15,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-insecure-change-me')
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    'api-unimap.birukkasahun.com,jigjigaunimap.birukkasahun.com,localhost,127.0.0.1',
+).split(',')
 
 # ─── Application Definition ────────────────────────────────────────────────
 

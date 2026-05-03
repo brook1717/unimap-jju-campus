@@ -152,12 +152,25 @@ class DirectionsView(APIView):
             )
 
         # ── 5. Snap to graph ──────────────────────────────────────────────────
+        # Prefer entrance_point (the actual walkable entrance) when available;
+        # fall back to the building centroid (point).
+        start_pt = start_loc.entrance_point or start_loc.point
+        end_pt   = end_loc.entrance_point   or end_loc.point
+
+        if start_pt is None or end_pt is None:
+            return error_response(
+                'One or both locations are missing coordinate data. '
+                'No route found.',
+                404,
+                'NoRouteFound',
+            )
+
         svc = PathfindingService()
         start_node, start_snap_m = svc.find_nearest_node(
-            start_loc.point.x, start_loc.point.y
+            start_pt.x, start_pt.y
         )
         end_node, end_snap_m = svc.find_nearest_node(
-            end_loc.point.x, end_loc.point.y
+            end_pt.x, end_pt.y
         )
 
         # Boundary guard: reject locations that are too far from any path.

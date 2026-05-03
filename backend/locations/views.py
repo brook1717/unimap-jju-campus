@@ -2,7 +2,7 @@ import logging
 
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-from django.db.models import Case, IntegerField, Value, When
+from django.db.models import Case, IntegerField, Q, Value, When
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
@@ -17,6 +17,24 @@ from .models import CampusLocation
 from .serializers import CampusLocationSerializer
 
 logger = logging.getLogger(__name__)
+
+# ── Spelling normalization ───────────────────────────────────────────────────
+# Common misspelling pairs.  When one variant is searched, we also check the
+# other so that "Jijiga University" still finds "Jigjiga University" results.
+SPELLING_VARIANTS = {
+    'jijiga': 'jigjiga',
+    'jigjiga': 'jijiga',
+}
+
+
+def _expand_query(q: str) -> list[str]:
+    """Return a list of query variants (original + any misspelling expansions)."""
+    queries = [q]
+    q_lower = q.lower()
+    for wrong, correct in SPELLING_VARIANTS.items():
+        if wrong in q_lower:
+            queries.append(q_lower.replace(wrong, correct))
+    return queries
 
 
 class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -39,12 +57,22 @@ class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
           0 — exact name match  (Library)
           1 — name starts with  (Lib…)
           2 — partial / category / description match
-        Ordering is preserved by GeoJsonPagination.
+        Also expands common misspelling variants (e.g. Jijiga ↔ Jigjiga)
+        so both spellings surface results.
         """
         qs = super().get_queryset()
         q  = self.request.query_params.get('search', '').strip()
         if q:
-            qs = qs.annotate(
+            # Expand misspelling variants and build an OR filter across all
+            variants = _expand_query(q)
+            variant_q = Q()
+            for v in variants:
+                variant_q |= (
+                    Q(name__icontains=v) |
+                    Q(category__icontains=v) |
+                    Q(description__icontains=v)
+                )
+            qs = qs.filter(variant_q).annotate(
                 _search_rank=Case(
                     When(name__iexact=q,       then=Value(0)),
                     When(name__istartswith=q,  then=Value(1)),
@@ -79,7 +107,12 @@ class CampusLocationViewSet(viewsets.ReadOnlyModelViewSet):
         q  = request.query_params.get('q', '').strip()
         qs = CampusLocation.objects.filter(is_active=True)
         if q:
-            qs = qs.filter(name__icontains=q).annotate(
+            # Expand misspelling variants for autocomplete too
+            variants = _expand_query(q)
+            name_q = Q()
+            for v in variants:
+                name_q |= Q(name__icontains=v)
+            qs = qs.filter(name_q).annotate(
                 _rank=Case(
                     When(name__iexact=q,      then=Value(0)),
                     When(name__istartswith=q, then=Value(1)),
