@@ -63,6 +63,14 @@ docker-data/
 *.cert
 serviceAccountKey.json
 
+# ─── Terraform ────────────────────────────────────────────────────────────
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/terraform.tfvars
+terraform/*.auto.tfvars
+
 # ─── OS ────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
