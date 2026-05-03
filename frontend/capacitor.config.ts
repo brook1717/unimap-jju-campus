@@ -10,8 +10,8 @@ interface CapacitorConfig {
 }
 
 const config: CapacitorConfig = {
-  appId: 'et.edu.jju.unimap',
-  appName: 'UniMap JJU',
+  appId: 'com.birukkasahun.unimap',
+  appName: 'UniMap',
   webDir: 'dist',
   bundledWebRuntime: false,
   server: {
