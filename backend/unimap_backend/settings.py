@@ -271,6 +271,37 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # True in dev, False in prod
 
+# ─── CSRF ────────────────────────────────────────────────────────────────
+# Required when the admin panel is accessed behind HTTPS in production.
+# Set CSRF_TRUSTED_ORIGINS as a comma-separated string in .env, e.g.:
+#   CSRF_TRUSTED_ORIGINS=https://admin.unimap.example.com,https://unimap.example.com
+_csrf_env = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in _csrf_env.split(',')
+    if origin.strip()
+] if _csrf_env else []
+
+# ─── Production Security Hardening ──────────────────────────────────────
+# These settings are only activated when DEBUG=False to prevent information
+# leakage and enforce HTTPS-only access in production.
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 31536000        # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'
+
+    # Remove the browsable API renderer in production
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+
 # ─── GeoDjango Library Paths ──────────────────────────────────────────────
 # In the Docker container (Debian Bookworm + ldconfig) Django auto-detects
 # GDAL 3.6 and GEOS 3.11 via ctypes.  The glob fallback below pins the

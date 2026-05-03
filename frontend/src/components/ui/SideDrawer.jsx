@@ -19,6 +19,7 @@ import {
   Layers,
   Target,
   Smartphone,
+  ShieldCheck,
 } from 'lucide-react';
 import useTheme from '../../hooks/useTheme';
 
@@ -500,6 +501,15 @@ export default function SideDrawer({ isOpen, onClose }) {
               <p className="text-center text-xs text-slate-400 dark:text-slate-500">
                 UniMap v0.1 &middot; Jigjiga University
               </p>
+              <a
+                href="https://api-unimap.birukkasahun.com/admin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+              >
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Staff Portal
+              </a>
             </div>
           </motion.aside>
         </>

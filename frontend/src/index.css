@@ -213,3 +213,15 @@
 .dark .leaflet-control-layers-separator {
   border-top-color: #334155;
 }
+
+/* ── App install banner animation ───────────────────────────────────── */
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.animate-slide-up {
+  animation: slide-up 0.35s ease-out;
+}
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

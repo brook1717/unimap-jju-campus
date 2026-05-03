@@ -14,6 +14,7 @@ import LocationDetailsCard from '../components/ui/LocationDetailsCard';
 import NavigationCard from '../components/ui/NavigationCard';
 import MenuButton from '../components/ui/MenuButton';
 import SideDrawer from '../components/ui/SideDrawer';
+import AppInstallBanner from '../components/ui/AppInstallBanner';
 
 /*
   UI modes:  'search'     – SearchCard visible
@@ -127,6 +128,7 @@ export default function MapLayout() {
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
+      <AppInstallBanner />
       </div>
     </div>
   );
