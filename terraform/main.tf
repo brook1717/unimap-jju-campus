@@ -117,7 +117,7 @@ resource "aws_instance" "backend" {
     encrypted             = true
   }
 
-  user_data = file("${path.module}/scripts/user_data.sh")
+  user_data = file("${path.module}/scripts/setup.sh")
 
   tags = {
     Name    = "${var.project_name}-backend"
